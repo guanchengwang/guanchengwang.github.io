@@ -176,9 +176,42 @@
     } catch (e) {
       return;                       // malformed token: leave the link untouched
     }
-    el.href = 'ma' + 'ilto:' + addr;
+
     var label = el.querySelector('.js-mail-text');
-    if (label) label.textContent = addr;
+    if (!label) {
+      // Icon link. Its text never shows the address, but writing the mailto:
+      // href on load would still park it in the live DOM for anything that
+      // executes JS and reads the tree. So arm it on the first sign of human
+      // intent — hover, keyboard focus or touch — which always precedes the
+      // click, keeping it a single click for real visitors.
+      var arm = function () {
+        if (el.dataset.armed) return;
+        el.href = 'ma' + 'ilto:' + addr;
+        el.dataset.armed = '1';
+      };
+      ['mouseenter', 'focus', 'touchstart'].forEach(function (evt) {
+        el.addEventListener(evt, arm, { passive: true, once: true });
+      });
+      // Belt and braces: if a click somehow lands unarmed, arm and follow it.
+      el.addEventListener('click', function (e) {
+        if (el.dataset.armed) return;
+        e.preventDefault();
+        arm();
+        window.location.href = el.href;
+      });
+      return;
+    }
+
+    // Contact button: hold the address back until a human actually asks for
+    // it. Rendering it on load would put it on screen — and in the live DOM,
+    // where a headless scraper that executes JS would read it straight off.
+    el.addEventListener('click', function (e) {
+      if (el.dataset.revealed) return;   // already shown: let the mailto fire
+      e.preventDefault();
+      label.textContent = addr;
+      el.href = 'ma' + 'ilto:' + addr;
+      el.dataset.revealed = '1';
+    });
   });
 
   /* -------------------------------------------------------- avatar */
