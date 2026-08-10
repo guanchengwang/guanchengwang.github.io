@@ -59,23 +59,31 @@ jobs:
           fi
 
       # Pages cannot be enabled from a workflow (configure-pages' `enablement`
-      # needs a PAT, not GITHUB_TOKEN), so a repo where the setting has not
-      # been flipped yet would fail on every push and email about it. Detect
-      # that case and skip the deploy instead, leaving a clear note in the log.
-      - name: Is Pages enabled?
+      # needs a PAT, not GITHUB_TOKEN). Probe the real configuration instead:
+      # deploy only when Pages is set to build from Actions, and skip with a
+      # clear note otherwise, so a setting that is merely unset never fails a run.
+      - name: Is Pages set to build from Actions?
         id: check
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          code=$(curl -sS -o /dev/null -w '%{http_code}' \
+          body=$(curl -sS \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/pages")
-          if [ "$code" = "200" ]; then
+            "https://api.github.com/repos/${{ github.repository }}/pages" || echo '{}')
+          build_type=$(printf '%s' "$body" \
+            | python3 -c "import json,sys;print((json.load(sys.stdin).get('build_type') or ''))" \
+            2>/dev/null || echo '')
+          echo "detected build_type: '$build_type'"
+          if [ "$build_type" = "workflow" ]; then
             echo "enabled=true" >> "$GITHUB_OUTPUT"
           else
             echo "enabled=false" >> "$GITHUB_OUTPUT"
-            echo "::warning title=GitHub Pages is not enabled::Settings -> Pages -> Build and deployment -> Source: GitHub Actions. Then re-run this workflow. Skipping the deploy so this run does not fail."
+            if [ -z "$build_type" ]; then
+              echo "::warning title=GitHub Pages is not enabled::Settings -> Pages -> Build and deployment -> Source: GitHub Actions. Skipping the deploy so this run does not fail."
+            else
+              echo "::warning title=Pages builds from a branch::Source is '$build_type', so the site publishes straight from main and this deploy step is unnecessary. Skipping it."
+            fi
           fi
 
       - uses: actions/configure-pages@v6
