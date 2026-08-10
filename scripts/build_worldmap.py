@@ -172,8 +172,11 @@ def render_markers(places: list[dict]) -> tuple[str, str]:
             f'transform="translate({x:.1f} {y:.1f})" tabindex="0" role="img" '
             f'aria-label="{label}">\n'
             f'        <circle class="map__halo" r="8"/>\n'
-            f'        <circle class="map__dot" r="3.2"/>\n'
-            f'        <title>{label}</title>\n'
+            + ('        <circle class="map__ring" r="6"/>\n' if cat == "work" else "")
+            + f'        <circle class="map__dot" r="3.2"/>\n'
+            + (f'        <text class="map__label" x="10" y="3.5">{name}</text>\n'
+               if cat == "work" else "")
+            + f'        <title>{label}</title>\n'
             f'      </g>'
         )
         groups.setdefault(country, []).append(
