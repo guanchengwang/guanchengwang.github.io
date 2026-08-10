@@ -139,7 +139,8 @@ def build_world_paths(min_area: float = 1.5) -> str:
                 if d:
                     paths.append(d)
 
-    svg = f'<path class="map__land" d="{"".join(paths)}"/>'
+    svg = ('<path class="map__land" vector-effect="non-scaling-stroke" '
+           f'd="{"".join(paths)}"/>')
     CACHE_PATHS.write_text(svg)
     log(f"wrote {CACHE_PATHS.relative_to(ROOT)} "
         f"({len(paths)} rings, {len(svg) / 1024:.0f} KB)")
@@ -169,6 +170,7 @@ def render_markers(places: list[dict]) -> tuple[str, str]:
 
         dots.append(
             f'      <g class="map__pin map__pin--{cat}" data-place="{i}" '
+            f'data-x="{x:.1f}" data-y="{y:.1f}" '
             f'transform="translate({x:.1f} {y:.1f})" tabindex="0" role="img" '
             f'aria-label="{label}">\n'
             f'        <circle class="map__halo" r="8"/>\n'
@@ -230,7 +232,15 @@ def main() -> int:
            f'viewBox="0 {VIEW_TOP:.0f} {WIDTH:.0f} {VIEW_HEIGHT:.0f}" '
            f'role="group" aria-label="World map of places visited" '
            f'xmlns="http://www.w3.org/2000/svg">\n'
+           f'        <rect class="map__sea" x="-2" y="-2" '
+           f'width="{WIDTH + 4:.0f}" height="{HEIGHT + 4:.0f}"/>\n'
            f'        {land}\n{dots}\n      </svg>\n'
+           f'      <div class="map__controls">\n'
+           f'        <button type="button" class="map__btn" data-map="in" aria-label="Zoom in">+</button>\n'
+           f'        <button type="button" class="map__btn" data-map="out" aria-label="Zoom out">\u2212</button>\n'
+           f'        <button type="button" class="map__btn map__btn--reset" data-map="reset" aria-label="Reset view">\u21ba</button>\n'
+           f'      </div>\n'
+           f'      <p class="map__hint">Drag to pan \u00b7 \u2318-scroll or +/\u2212 to zoom</p>\n'
            f'      <p class="map__legend">{legend}{summary}</p>\n'
            f'      <details class="places-toggle">\n'
            f'        <summary>Show the list</summary>\n'

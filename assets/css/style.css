@@ -413,7 +413,10 @@ html[data-theme="light"] .icon-moon { display: none; }
 .map { margin: 0; }
 .map__svg {
   width: 100%; height: auto; display: block;
-  overflow: visible;                 /* halos may sit outside the viewBox */
+  /* Must clip: once the view is zoomed, anything outside the viewBox would
+     otherwise paint across the rest of the page. */
+  overflow: hidden;
+  border-radius: var(--radius);
 }
 .map__land {
   fill: color-mix(in srgb, var(--surface-2) 55%, var(--text-mute) 12%);
@@ -529,3 +532,39 @@ html[data-theme="light"] .icon-moon { display: none; }
   fill: var(--accent); dominant-baseline: middle;
   paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round;
 }
+
+/* Pan and zoom, contained entirely within the map frame. */
+.map { position: relative; }
+.map__svg { touch-action: pan-y; cursor: grab; }   /* page still scrolls on touch */
+.map__svg.is-dragging { cursor: grabbing; }
+.map__svg:focus { outline: none; }
+.map:focus-within .map__svg { outline: 1px solid var(--line); }
+
+.map__controls {
+  position: absolute; top: .5rem; right: .5rem;
+  display: flex; flex-direction: column; gap: .3rem;
+}
+.map__btn {
+  width: 26px; height: 26px; display: grid; place-items: center;
+  font-family: var(--sans); font-size: .9rem; line-height: 1; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  color: var(--text-dim); transition: color .2s, border-color .2s, opacity .2s;
+}
+.map__btn:hover { color: var(--text); border-color: var(--text-mute); }
+.map__btn:disabled { opacity: .3; cursor: default; }
+.map__btn:disabled:hover { color: var(--text-dim); border-color: var(--line); }
+
+.map__hint {
+  margin: .5rem 0 0; font-size: .72rem; color: var(--text-mute);
+  opacity: 0; transition: opacity .3s;
+}
+.map:hover .map__hint, .map:focus-within .map__hint { opacity: 1; }
+@media (hover: none) {
+  .map__hint { opacity: 1; }
+}
+
+/* Water. Without it a zoomed-in ocean reads as "the map stopped" rather than
+   sea, because only land is drawn. */
+.map__sea { fill: color-mix(in srgb, var(--bg) 88%, var(--accent) 6%); }
+.map__svg { border: 1px solid var(--line-soft); }

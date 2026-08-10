@@ -244,6 +244,134 @@
     });
   }
 
+  /* ------------------------------------------------- map pan + zoom */
+  // Ireland is a few pixels wide at world scale, so Limerick, Dublin, Cork and
+  // Galway collapse into one blob. Zooming separates them.
+  //
+  // Everything is scoped to the frame: a plain wheel still scrolls the page
+  // (zoom needs ctrl/⌘), and touch keeps `touch-action: pan-y` so the page can
+  // still be scrolled with a finger on the map. Nothing here traps the reader.
+  var mapSvg = document.querySelector('.map__svg');
+  if (mapSvg) {
+    var vb = (mapSvg.getAttribute('viewBox') || '').split(/\s+/).map(Number);
+    var base = { x: vb[0], y: vb[1], w: vb[2], h: vb[3] };
+    var view = { x: base.x, y: base.y, w: base.w, h: base.h };
+    var MIN_W = base.w / 16;                    // deepest zoom
+    var mapPins = mapSvg.querySelectorAll('.map__pin');
+    var resetBtn = document.querySelector('.map__btn--reset');
+
+    var applyView = function () {
+      view.w = Math.min(base.w, Math.max(MIN_W, view.w));
+      view.h = view.w * base.h / base.w;
+      // Keep the frame full of map — never pan into empty space.
+      view.x = Math.min(base.x + base.w - view.w, Math.max(base.x, view.x));
+      view.y = Math.min(base.y + base.h - view.h, Math.max(base.y, view.y));
+      mapSvg.setAttribute('viewBox',
+        view.x.toFixed(2) + ' ' + view.y.toFixed(2) + ' ' +
+        view.w.toFixed(2) + ' ' + view.h.toFixed(2));
+
+      // Counter-scale the pins so dots and labels stay a constant size on
+      // screen. This is what actually separates the cluster: positions spread
+      // apart while the markers themselves do not grow.
+      var inv = view.w / base.w;
+      Array.prototype.forEach.call(mapPins, function (pin) {
+        pin.setAttribute('transform',
+          'translate(' + pin.dataset.x + ' ' + pin.dataset.y + ') scale(' + inv + ')');
+      });
+      if (resetBtn) resetBtn.disabled = view.w >= base.w - 0.01;
+    };
+
+    // Zoom about a fixed point, given in viewBox coordinates.
+    var zoomAt = function (factor, cx, cy) {
+      var nw = Math.min(base.w, Math.max(MIN_W, view.w / factor));
+      var k = view.w / nw;
+      view.x = cx - (cx - view.x) / k;
+      view.y = cy - (cy - view.y) / k;
+      view.w = nw;
+      applyView();
+    };
+
+    var toView = function (clientX, clientY) {
+      var r = mapSvg.getBoundingClientRect();
+      return {
+        x: view.x + (clientX - r.left) / r.width * view.w,
+        y: view.y + (clientY - r.top) / r.height * view.h
+      };
+    };
+
+    var centre = function () {
+      return { x: view.x + view.w / 2, y: view.y + view.h / 2 };
+    };
+
+    /* drag to pan */
+    var dragging = false, last = null, moved = 0;
+    mapSvg.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 && e.pointerType === 'mouse') return;
+      dragging = true; moved = 0;
+      last = { x: e.clientX, y: e.clientY };
+      mapSvg.classList.add('is-dragging');
+      if (mapSvg.setPointerCapture) mapSvg.setPointerCapture(e.pointerId);
+    });
+    mapSvg.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var r = mapSvg.getBoundingClientRect();
+      var dx = e.clientX - last.x, dy = e.clientY - last.y;
+      moved += Math.abs(dx) + Math.abs(dy);
+      view.x -= dx / r.width * view.w;
+      view.y -= dy / r.height * view.h;
+      last = { x: e.clientX, y: e.clientY };
+      applyView();
+    });
+    ['pointerup', 'pointercancel'].forEach(function (evt) {
+      mapSvg.addEventListener(evt, function () {
+        dragging = false;
+        mapSvg.classList.remove('is-dragging');
+      });
+    });
+
+    /* ctrl/⌘ + wheel zooms; a plain wheel is left to the page */
+    mapSvg.addEventListener('wheel', function (e) {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      var pt = toView(e.clientX, e.clientY);
+      zoomAt(e.deltaY < 0 ? 1.2 : 1 / 1.2, pt.x, pt.y);
+    }, { passive: false });
+
+    /* double-click zooms in on the point clicked */
+    mapSvg.addEventListener('dblclick', function (e) {
+      var pt = toView(e.clientX, e.clientY);
+      zoomAt(1.9, pt.x, pt.y);
+    });
+
+    /* buttons */
+    Array.prototype.forEach.call(document.querySelectorAll('.map__btn'), function (btn) {
+      btn.addEventListener('click', function () {
+        var c = centre();
+        var how = btn.dataset.map;
+        if (how === 'in') zoomAt(1.6, c.x, c.y);
+        else if (how === 'out') zoomAt(1 / 1.6, c.x, c.y);
+        else { view = { x: base.x, y: base.y, w: base.w, h: base.h }; applyView(); }
+      });
+    });
+
+    /* keyboard, once a pin or the frame has focus */
+    mapSvg.setAttribute('tabindex', '0');
+    mapSvg.addEventListener('keydown', function (e) {
+      var step = view.w * 0.12, c = centre(), used = true;
+      if (e.key === 'ArrowLeft') view.x -= step;
+      else if (e.key === 'ArrowRight') view.x += step;
+      else if (e.key === 'ArrowUp') view.y -= step;
+      else if (e.key === 'ArrowDown') view.y += step;
+      else if (e.key === '+' || e.key === '=') zoomAt(1.6, c.x, c.y);
+      else if (e.key === '-' || e.key === '_') zoomAt(1 / 1.6, c.x, c.y);
+      else if (e.key === '0') { view = { x: base.x, y: base.y, w: base.w, h: base.h }; }
+      else used = false;
+      if (used) { e.preventDefault(); applyView(); }
+    });
+
+    applyView();
+  }
+
   /* -------------------------------------------------------- avatar */
   // Show the photo only once it actually loads; otherwise the monogram stays.
   const avatar = document.getElementById('avatarImg');
