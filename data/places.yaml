@@ -75,6 +75,7 @@ places:
   - { name: "Florence",  country: "Italy",          lat: 43.7696, lon: 11.2558 }
   - { name: "Frankfurt", country: "Germany",        lat: 50.1109, lon: 8.6821 }
   - { name: "Tallinn",   country: "Estonia",        lat: 59.4370, lon: 24.7536 }
+  - { name: "Istanbul",  country: "Türkiye",        lat: 41.0082, lon: 28.9784 }
 
   # --- Japan --------------------------------------------------------------
   - { name: "Tokyo", country: "Japan", lat: 35.6762, lon: 139.6503 }

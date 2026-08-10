@@ -489,3 +489,17 @@ html[data-theme="light"] .icon-moon { display: none; }
   .places__group { grid-template-columns: 1fr; gap: .1rem; }
   .map__legend .map__count { margin-left: 0; }
 }
+
+/* Name list is collapsed by default — the map is the content, the list is
+   a reference for anyone who wants it. */
+.places-toggle { margin-top: .2rem; }
+.places-toggle summary {
+  display: inline-block; cursor: pointer; list-style: none;
+  font-size: .82rem; color: var(--text-mute);
+  border-bottom: 1px solid var(--line); padding-bottom: 1px;
+  transition: color .2s, border-color .2s;
+}
+.places-toggle summary::-webkit-details-marker { display: none; }
+.places-toggle summary:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.places-toggle[open] summary { margin-bottom: 1rem; }
+.places-toggle[open] summary::after { content: ' ×'; }

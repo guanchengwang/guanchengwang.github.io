@@ -38,6 +38,11 @@ GEOJSON_URL = ("https://raw.githubusercontent.com/nvkelso/natural-earth-vector/"
 # Map canvas. Robinson is 2:1-ish; these numbers give a comfortable aspect.
 WIDTH, HEIGHT = 1000.0, 515.0
 
+# With Antarctica dropped, the frame carries empty ocean above ~84°N and below
+# ~57°S. Cropping the viewBox to the inhabited band removes roughly 15% of the
+# section height without moving a single marker.
+VIEW_TOP, VIEW_HEIGHT = 8.0, 448.0
+
 # Robinson projection lookup, 5-degree steps. X scales longitude, Y sets the
 # vertical position of each parallel; values between rows are interpolated.
 ROBINSON = [
@@ -180,7 +185,7 @@ def render_markers(places: list[dict]) -> tuple[str, str]:
     items = []
     for country, names in groups.items():
         items.append(
-            f'        <li class="places__group">'
+            f'          <li class="places__group">'
             f'<span class="places__country">{country}</span>'
             f'<span class="places__names">{", ".join(names)}</span></li>'
         )
@@ -218,12 +223,16 @@ def main() -> int:
     summary = (f'<p class="map__count">{len(places)} places across '
                f'{countries} countries</p>')
 
-    svg = (f'      <svg class="map__svg" viewBox="0 0 {WIDTH:.0f} {HEIGHT:.0f}" '
+    svg = (f'      <svg class="map__svg" '
+           f'viewBox="0 {VIEW_TOP:.0f} {WIDTH:.0f} {VIEW_HEIGHT:.0f}" '
            f'role="group" aria-label="World map of places visited" '
            f'xmlns="http://www.w3.org/2000/svg">\n'
            f'        {land}\n{dots}\n      </svg>\n'
            f'      <p class="map__legend">{legend}{summary}</p>\n'
-           f'      <ul class="places">\n{items}\n      </ul>')
+           f'      <details class="places-toggle">\n'
+           f'        <summary>Show the list</summary>\n'
+           f'        <ul class="places">\n{items}\n        </ul>\n'
+           f'      </details>')
 
     page = INDEX_HTML.read_text()
     page = inject("MAP", svg, page)
