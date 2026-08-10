@@ -1,0 +1,69 @@
+# ---------------------------------------------------------------------------
+# places.yaml — the travel map on the homepage
+# ---------------------------------------------------------------------------
+# Add a place, run `python3 scripts/build_worldmap.py`, and the map redraws.
+# Coordinates are plain decimal degrees: positive lat = north, positive lon =
+# east. Looking a city up on any map site and copying the pair is enough —
+# the map is small, so a few kilometres of error is invisible.
+#
+# `category` must match a key under `categories:` below; it sets the marker
+# colour and the legend.
+# ---------------------------------------------------------------------------
+
+categories:
+  home:       { label: "Lived &amp; worked" }
+  conference: { label: "Conferences &amp; talks" }
+  visited:    { label: "Visited" }
+
+places:
+  # --- Confirmed ----------------------------------------------------------
+  - name: "Limerick, Ireland"
+    lat: 52.6638
+    lon: -8.6267
+    category: home
+    note: "Lero, University of Limerick — current"
+
+  - name: "Beijing, China"
+    lat: 39.9042
+    lon: 116.4074
+    category: home
+    note: "Peking University — Ph.D."
+
+  # --- Uncomment the ones you actually attended ---------------------------
+  # Coordinates are filled in already; delete the ones that do not apply.
+  #
+  # - name: "San Diego, USA"
+  #   lat: 32.7157
+  #   lon: -117.1611
+  #   category: conference
+  #   note: "ASE 2019"
+  #
+  # - name: "Beijing, China"
+  #   lat: 39.9042
+  #   lon: 116.4074
+  #   category: conference
+  #   note: "ISSTA 2019 — student volunteer"
+  #
+  # - name: "Athens, Greece"
+  #   lat: 37.9838
+  #   lon: 23.7275
+  #   category: conference
+  #   note: "ESEC/FSE 2021"
+  #
+  # - name: "Florence, Italy"
+  #   lat: 43.7696
+  #   lon: 11.2558
+  #   category: conference
+  #   note: "ISSRE 2023"
+  #
+  # - name: "Luxembourg"
+  #   lat: 49.6116
+  #   lon: 6.1319
+  #   category: conference
+  #   note: "ASE 2023"
+  #
+  # - name: "Seoul, South Korea"
+  #   lat: 37.5665
+  #   lon: 126.9780
+  #   category: conference
+  #   note: "ICML 2026"

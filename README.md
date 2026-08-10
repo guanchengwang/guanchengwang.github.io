@@ -138,6 +138,22 @@ reserved for the two Distinguished Paper awards. If you change `--accent` in
   third-party requests. Embedding Google Fonts directly would send every
   visitor's IP to Google, which EU courts have found to breach GDPR.
 
+### The travel map
+
+The `Places` section is an inline SVG world map — no tiles, no Google Maps
+embed, so it makes no third-party request and leaks no visitor IPs. Add a place
+to `data/places.yaml` and rebuild:
+
+```bash
+python3 scripts/build_worldmap.py
+```
+
+Coordinates are plain decimal degrees; copying the pair from any map site is
+accurate enough at this size. `category` picks the marker colour and controls
+the legend, which only lists categories actually in use. Country outlines come
+from Natural Earth (public domain) and are cached in `data/world-paths.svg`, so
+the rebuild is offline after the first run.
+
 **Your photo:** drop a square image at `assets/img/avatar.jpg`. It replaces the
 `GW` monogram automatically; if the file is missing the monogram just stays.
 

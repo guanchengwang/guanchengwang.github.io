@@ -218,6 +218,32 @@
     });
   }
 
+  /* ---------------------------------------------------- travel map */
+  // Hovering either a list entry or a map pin highlights the other, so a long
+  // list stays navigable without hunting for the matching dot.
+  var pins = document.querySelectorAll('.map__pin[data-place]');
+  var placeRows = document.querySelectorAll('.place[data-place]');
+
+  if (pins.length && placeRows.length) {
+    var byId = {};
+    Array.prototype.forEach.call(pins, function (pin) {
+      byId[pin.getAttribute('data-place')] = pin;
+    });
+
+    Array.prototype.forEach.call(placeRows, function (row) {
+      var pin = byId[row.getAttribute('data-place')];
+      if (!pin) return;
+      var on = function () { pin.classList.add('is-active'); row.classList.add('is-active'); };
+      var off = function () { pin.classList.remove('is-active'); row.classList.remove('is-active'); };
+      row.addEventListener('mouseenter', on);
+      row.addEventListener('mouseleave', off);
+      pin.addEventListener('mouseenter', on);
+      pin.addEventListener('mouseleave', off);
+      pin.addEventListener('focus', on);
+      pin.addEventListener('blur', off);
+    });
+  }
+
   /* -------------------------------------------------------- avatar */
   // Show the photo only once it actually loads; otherwise the monogram stays.
   const avatar = document.getElementById('avatarImg');

@@ -408,3 +408,73 @@ html[data-theme="light"] .icon-moon { display: none; }
   .pub { break-inside: avoid; }
   a { color: #000; }
 }
+
+/* ------------------------------------------------------------------- map */
+.map { margin: 0; }
+.map__svg {
+  width: 100%; height: auto; display: block;
+  overflow: visible;                 /* halos may sit outside the viewBox */
+}
+.map__land {
+  fill: color-mix(in srgb, var(--surface-2) 55%, var(--text-mute) 12%);
+  stroke: var(--line);
+  stroke-width: .5;
+  stroke-linejoin: round;
+  fill-rule: evenodd;                /* so lakes and enclaves punch through */
+}
+
+.map__pin { cursor: default; }
+.map__dot  { fill: var(--text-mute); transition: r .2s var(--ease); }
+.map__halo { fill: currentColor; opacity: 0; transition: opacity .25s; }
+
+.map__pin--home       { color: var(--accent); }
+.map__pin--home  .map__dot { fill: var(--accent); }
+.map__pin--conference { color: var(--gold); }
+.map__pin--conference .map__dot { fill: var(--gold); }
+.map__pin--visited    { color: var(--text-dim); }
+
+.map__pin:hover .map__halo,
+.map__pin:focus .map__halo,
+.map__pin.is-active .map__halo { opacity: .22; }
+.map__pin:hover .map__dot,
+.map__pin:focus .map__dot,
+.map__pin.is-active .map__dot { r: 5.5; }
+.map__pin:focus { outline: none; }
+
+/* A slow pulse on the current home marker — the one thing worth animating. */
+.map__pin--home .map__halo { animation: pin-pulse 3.4s ease-in-out infinite; }
+@keyframes pin-pulse {
+  0%, 100% { opacity: .05; }
+  50%      { opacity: .20; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map__pin--home .map__halo { animation: none; opacity: .12; }
+}
+
+.map__legend {
+  display: flex; flex-wrap: wrap; gap: 1.1rem;
+  margin: .9rem 0 1.4rem; font-size: .76rem; color: var(--text-mute);
+}
+.map__key { display: inline-flex; align-items: center; gap: .4rem; }
+.map__key::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor;
+}
+.map__key--home       { color: var(--accent); }
+.map__key--conference { color: var(--gold); }
+.map__key--visited    { color: var(--text-dim); }
+
+.places { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.place {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .8rem;
+  padding: .6rem 0; border-top: 1px solid var(--line-soft);
+  cursor: default; transition: color .2s;
+}
+.place:first-child { border-top: none; }
+.place__name { font-size: .92rem; color: var(--text); font-weight: 550; }
+.place__note { font-size: .85rem; color: var(--text-mute); }
+.place.is-active .place__name { color: var(--accent); }
+
+@media (min-width: 700px) {
+  .places { grid-template-columns: 1fr 1fr; column-gap: 2.6rem; }
+  .places .place:nth-child(2) { border-top: none; }
+}
