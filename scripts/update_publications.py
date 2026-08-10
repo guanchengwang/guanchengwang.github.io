@@ -37,6 +37,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 OVERRIDES_FILE = DATA / "overrides.yaml"
 OUTPUT_JSON = DATA / "publications.json"
+NEWS_FILE = DATA / "news.yaml"
+NEWS_AUTO = DATA / "news-auto.json"
 OUTPUT_BIB = DATA / "publications.bib"
 INDEX_HTML = ROOT / "index.html"
 PUBS_HTML = ROOT / "publications.html"
@@ -218,7 +220,7 @@ def apply_overrides(pubs: list[dict], ov: dict) -> list[dict]:
     extras = ov.get("extra") or []
     hidden = {norm_title(h) for h in (ov.get("hide") or [])}
     links = {norm_title(k): v for k, v in (ov.get("links") or {}).items()}
-    selected = {norm_title(t) for t in (ov.get("selected") or [])}
+    wanted = [str(t) for t in (ov.get("selected") or [])]
 
     # Extras go in first so patch/merge rules can also target them.
     # A manual entry is authoritative: when DBLP already has something under the
@@ -258,13 +260,25 @@ def apply_overrides(pubs: list[dict], ov: dict) -> list[dict]:
         extra_links = links.get(norm_title(pub["title"]))
         if extra_links:
             pub["links"] = {**pub.get("links", {}), **extra_links}
-        # Titles are matched after patching, so a patched title is what to list
-        # under `selected:` in overrides.yaml.
-        pub["selected"] = norm_title(pub["title"]) in selected
+        pub["selected"] = False
 
-    unmatched = selected - {norm_title(p["title"]) for p in pubs}
-    for miss in unmatched:
-        log(f"WARNING: selected title matched nothing: {miss[:50]}")
+    # `selected:` entries match on any distinctive substring of the title, so a
+    # fragment like "Mutation-Guided" is enough — no need to paste an exact
+    # title and keep it in sync when a venue renames the paper.
+    for want in wanted:
+        needle = norm_title(want)
+        # An exact title always wins, so "Probabilistic Delta Debugging" picks
+        # the FSE paper rather than colliding with the ISSRE one whose title
+        # contains it.
+        hits = [p for p in pubs if norm_title(p["title"]) == needle] or \
+               [p for p in pubs if needle in norm_title(p["title"])]
+        if not hits:
+            log(f"WARNING: selected \"{want[:46]}\" matched no paper")
+        elif len(hits) > 1:
+            log(f"WARNING: selected \"{want[:36]}\" is ambiguous "
+                f"({len(hits)} matches) — using none; make it more specific")
+        else:
+            hits[0]["selected"] = True
 
     return [p for p in pubs if norm_title(p["title"]) not in hidden]
 
@@ -283,6 +297,103 @@ def mark_authors(pubs: list[dict], aliases: list[str]) -> None:
                 "equal": flat in equal,
             })
         pub["authors"] = marked
+
+
+# --------------------------------------------------------------------------
+# news
+# --------------------------------------------------------------------------
+
+def derive_news(pubs: list[dict], cached: dict) -> list[dict]:
+    """Turn changes in the publication record into news items.
+
+    Two things are worth announcing: a paper appearing for the first time, and
+    a preprint becoming an accepted paper. Both are visible as a diff against
+    the previous publications.json, which git keeps for us.
+
+    Derived items accumulate in news-auto.json rather than being recomputed,
+    so an announcement survives after the change that produced it scrolls out
+    of the diff.
+    """
+    try:
+        history = json.loads(NEWS_AUTO.read_text()) if NEWS_AUTO.exists() else []
+    except json.JSONDecodeError:
+        history = []
+    known = {h["key"] for h in history}
+
+    previous = {norm_title(p["title"]): p for p in cached.get("publications", [])}
+    first_run = not cached.get("publications")
+    fresh = []
+
+    for pub in pubs:
+        key = norm_title(pub["title"])
+        was = previous.get(key)
+        venue = pub.get("venue_short") or pub.get("venue") or ""
+        title = pub["title"]
+        when = f"{pub.get('year')}-{MONTHS.index(pub['month']) + 1:02d}" \
+            if pub.get("month") in MONTHS else str(pub.get("year") or "")
+
+        if was is None and not first_run:
+            if pub["type"] == "preprint":
+                item = (f"New preprint: *{title}*.", f"new:{key}")
+            else:
+                item = (f"*{title}* appears in **{venue}**.", f"new:{key}")
+        elif was is not None and was.get("type") == "preprint" \
+                and pub["type"] != "preprint":
+            verb = "is published in" if pub["type"] == "journal" else "is accepted at"
+            item = (f"*{title}* {verb} **{venue}**.", f"accept:{key}")
+        else:
+            continue
+
+        if item[1] in known:
+            continue
+        fresh.append({"date": when, "text": item[0], "key": item[1], "auto": True})
+
+    if fresh:
+        history.extend(fresh)
+        NEWS_AUTO.write_text(json.dumps(history, indent=2, ensure_ascii=False) + "\n")
+        for f in fresh:
+            log(f"news: {f['text'][:64]}")
+    return history
+
+
+def render_news(auto: list[dict]) -> str:
+    cfg = yaml.safe_load(NEWS_FILE.read_text()) if NEWS_FILE.exists() else {}
+    cfg = cfg or {}
+    settings = cfg.get("settings") or {}
+    items = list(cfg.get("items") or [])
+    if settings.get("auto_from_publications", True):
+        items += auto
+
+    hidden = [h.lower() for h in (cfg.get("hide") or [])]
+    items = [i for i in items
+             if not any(h in str(i.get("text", "")).lower() for h in hidden)]
+
+    def sort_key(item):
+        d = str(item.get("date") or "")
+        parts = d.split("-")
+        return (-int(parts[0] or 0), -int(parts[1]) if len(parts) > 1 else 0)
+
+    items.sort(key=sort_key)
+    items = items[:int(settings.get("max_items", 6))]
+
+    def pretty(d: str) -> str:
+        parts = str(d).split("-")
+        if len(parts) > 1 and parts[1].isdigit():
+            return f"{MONTHS[int(parts[1]) - 1][:3]} {parts[0]}"
+        return parts[0]
+
+    def markup(text: str) -> str:
+        out = esc(text)
+        out = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", out)
+        out = re.sub(r"\*(.+?)\*", r"<em>\1</em>", out)
+        return out
+
+    return "\n".join(
+        f'        <li class="news__item">'
+        f'<time class="news__date">{esc(pretty(i.get("date", "")))}</time>'
+        f'<p>{markup(i.get("text", ""))}</p></li>'
+        for i in items
+    )
 
 
 # --------------------------------------------------------------------------
@@ -440,7 +551,17 @@ def main() -> int:
         "selected": len([p for p in pubs if p.get("selected")]),
     }
 
-    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    # Only move the "last updated" stamp when the record actually changed.
+    # Stamping every run would rewrite index.html nightly, so the Action would
+    # commit and redeploy every day to say nothing new.
+    same = (json.dumps(pubs, sort_keys=True, ensure_ascii=False) ==
+            json.dumps(cached.get("publications", []), sort_keys=True,
+                       ensure_ascii=False))
+    if same and cached.get("generated_at"):
+        generated_at = cached["generated_at"]
+        log("no change since last run — keeping the existing timestamp")
+    else:
+        generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     payload = {
         "generated_at": generated_at,
         "counts": counts,
@@ -456,9 +577,13 @@ def main() -> int:
 
     stamp = render_updated(generated_at)
 
+    auto_news = derive_news(pubs, cached) if NEWS_FILE.exists() else []
+
     if INDEX_HTML.exists():
         page = INDEX_HTML.read_text()
         page = inject("SELECTED", render_selected(pubs), page)
+        if NEWS_FILE.exists():
+            page = inject("NEWS", render_news(auto_news), page)
         page = inject("UPDATED", stamp, page, inline=True)
         INDEX_HTML.write_text(page)
         log(f"injected {counts['selected'] or 'fallback'} selected into index.html")

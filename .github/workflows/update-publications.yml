@@ -1,7 +1,7 @@
 name: Refresh publications
 
-# Rebuilds the publication list from DBLP + Google Scholar every day, commits
-# the result if anything changed, and republishes the site.
+# Rebuilds the publication list from DBLP every day, derives news items from
+# anything that changed, commits if there is a difference, and republishes.
 #
 # Runs on a schedule, and can be triggered by hand from the Actions tab
 # ("Run workflow") whenever a paper is accepted and you don't want to wait.
@@ -35,20 +35,23 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: Rebuild publication list
-        run: python scripts/update_publications.py
+      - name: Rebuild publications, news and map
+        run: |
+          python scripts/update_publications.py
+          python scripts/build_worldmap.py
 
       - name: Commit if anything changed
         id: commit
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/publications.json data/publications.bib index.html
+          git add data/publications.json data/publications.bib \
+                  data/news-auto.json index.html publications.html
           if git diff --staged --quiet; then
             echo "No change — publication record is already current."
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "chore: refresh publications from DBLP and Google Scholar"
+            git commit -m "chore: refresh publications and news from DBLP"
             git push
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi

@@ -216,11 +216,80 @@ option. Once you own a domain:
 
 ---
 
+## Maintenance: what you actually have to do
+
+**Normally: nothing.** A GitHub Action runs at 04:17 UTC daily, pulls DBLP,
+regenerates both publication lists, writes any news the change implies, and
+redeploys. It commits only when something really changed, so a quiet week
+produces no commits at all.
+
+Three things it cannot know, and how long each takes:
+
+| When | What you do | Effort |
+| --- | --- | --- |
+| A paper is accepted | Add a `patch` entry in `data/overrides.yaml` promoting it from arXiv to the real venue | ~1 min |
+| You want it featured | Add a fragment under `selected:` | ~15 s |
+| Non-paper news (PC, award, talk, move) | Add an item to `data/news.yaml` | ~30 s |
+
+Then:
+
+```bash
+make && git commit -am "update" && git push
+```
+
+`make` rebuilds everything; pushing triggers the deploy.
+
+### Choosing the homepage papers
+
+```bash
+make papers
+```
+
+Prints every paper with a ★ against the ones currently featured and a
+ready-made fragment for each. Copy a quoted string into `selected:` in
+`data/overrides.yaml` — a distinctive fragment is enough, no exact titles to
+keep in sync. Fragments that match nothing, or match two papers, are reported
+when you build.
+
+### News
+
+You should not need to write paper news by hand again. When DBLP first indexes
+a paper, or when one of your preprints becomes an accepted paper, the build
+writes the item for you into `data/news-auto.json`:
+
+- new paper → *"New preprint: …"* or *"… appears in **TSE**."*
+- preprint accepted → *"… is accepted at **ICSE**."*
+
+`data/news.yaml` is for what a publication record cannot see — PC invitations,
+awards, talks, moves. `**bold**` and `*italic*` work. Items sort by date
+automatically, `max_items` controls how many show, and anything auto-generated
+that you dislike can be dropped by putting a fragment of it under `hide:`.
+
+### Before pushing
+
+```bash
+make check
+```
+
+Confirms the build is reproducible, that no email address leaked into the HTML,
+and that no third-party request crept in. Worth running after any edit to the
+templates.
+
+### If something looks wrong
+
+- **A paper is missing** — DBLP has not indexed it yet. Add it under `extra:`
+  in `overrides.yaml`; when DBLP catches up, the duplicate is merged away.
+- **A duplicate preprint and paper** — add the pair under `merge:`.
+- **The Action fails to push** — Settings → Actions → General → Workflow
+  permissions must be **Read and write**.
+- **DBLP is down** — the build falls back to the last committed
+  `publications.json`, so the site never empties out.
+
+
 ## Local preview
 
 ```bash
-python3 -m http.server 8000
+make serve
 ```
 
-Then visit http://localhost:8000. A plain `file://` open works too, but a local
-server matches production more closely.
+Rebuilds and serves at http://localhost:8000.

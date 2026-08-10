@@ -23,19 +23,24 @@ author:
 
 # ---------------------------------------------------------------------------
 # selected — the short list shown on the homepage. Everything else still
-# appears on publications.html. Titles must match the FINAL title, i.e. after
-# any `title:` correction in the patch rules below. A title that matches
-# nothing is reported as a warning when the script runs.
-# Leave this list empty and the homepage falls back to the six most recent
+# appears on publications.html.
+#
+# Entries match on any distinctive fragment of the title, so you never need to
+# paste a full title or keep it in sync. Run `make papers` to see every paper
+# with a ready-made fragment and a ★ against the ones currently selected.
+#
+# An exact title always beats a partial one. A fragment matching nothing, or
+# matching more than one paper, is reported when the build runs.
+# Leave the list empty and the homepage falls back to the six most recent
 # peer-reviewed papers.
 # ---------------------------------------------------------------------------
 selected:
-  - "SWE-ABS: Adversarial Benchmark Strengthening Exposes Inflated Success Rates on Test-based Benchmark"
-  - "Mutation-Guided Unit Test Generation With a Large Language Model"
-  - "Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles"
-  - "OrdinalFix: Fixing Compilation Errors via Shortest-Path CFL Reachability with Attribute Checking"
-  - "Probabilistic Delta Debugging"
-  - "History-Guided Configuration Diversification for Compiler Test-Program Generation"
+  - "SWE-ABS: Adversarial"
+  - "Mutation-Guided Unit"
+  - "Hallucination to"
+  - "OrdinalFix: Fixing"
+  - "Probabilistic Delta Debugging"      # exact title wins over the ISSRE one
+  - "History-Guided Configuration"
 
 # ---------------------------------------------------------------------------
 # patch — corrections applied to entries DBLP already has.

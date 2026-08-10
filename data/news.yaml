@@ -1,0 +1,45 @@
+# ---------------------------------------------------------------------------
+# news.yaml — the News section on the homepage
+# ---------------------------------------------------------------------------
+# You rarely need to touch this. Whenever DBLP picks up a new paper, or a
+# preprint of yours turns into an accepted paper, the nightly job writes the
+# news item for you into data/news-auto.json. This file is for everything a
+# publication record cannot know: PC invitations, awards, talks, moves, visits.
+#
+# `date` is "YYYY-MM" or just "YYYY". Items are sorted newest first regardless
+# of the order you write them in, so append wherever is convenient.
+#
+# **bold** and *italic* work in `text`.
+# ---------------------------------------------------------------------------
+
+settings:
+  # How many items the homepage shows. Older ones simply drop off.
+  max_items: 6
+  # Set false to stop deriving news from the publication list entirely.
+  auto_from_publications: true
+
+items:
+  # These three predate the automation. Everything from here on is written for
+  # you when DBLP picks the paper up — you should not need to add paper news
+  # by hand again.
+  - date: 2026-07
+    text: "*SWE-ABS*, on how adversarial benchmark strengthening exposes inflated
+           success rates on test-based benchmarks, is accepted at **ICML 2026**."
+
+  - date: 2026-04
+    text: "*Mutation-Guided Unit Test Generation with a Large Language Model*
+           appears in **IEEE Transactions on Software Engineering**."
+
+  - date: 2026-03
+    text: "*Hallucination to Consensus*, on multi-agent LLMs for end-to-end test
+           generation with accurate oracles, is published in **ACM TOSEM**."
+
+  - date: 2026-01
+    text: "Serving on the Program Committees of **ASE 2026** and **FSE 2026**."
+
+  - date: 2025-01
+    text: "Served on the Program Committee of **ASE 2025**."
+
+# Auto-generated items you would rather not show. Match on any distinctive
+# substring of the item text — usually part of the paper title is enough.
+hide: []
