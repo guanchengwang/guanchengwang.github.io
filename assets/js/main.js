@@ -163,16 +163,22 @@
   }
 
   /* ------------------------------------------------------ mailto */
-  // The address is split across data-* attributes and joined here, so the
-  // served HTML contains no harvestable "user@domain" string. Without JS the
-  // visible text stays as "guancheng.wang [at] ul.ie", which a human can read.
+  // The address is stored as reversed base64 in a single data-e attribute and
+  // decoded here. No fragment of it — not the local part, not the domain, not
+  // an "[at]" spelling — appears anywhere in the served HTML, so a harvester
+  // scraping the raw page finds nothing to reassemble.
   Array.prototype.forEach.call(document.querySelectorAll('.js-mail'), function (el) {
-    var user = el.dataset.user;
-    var domain = el.dataset.domain;
-    if (!user || !domain) return;
-    el.href = 'ma' + 'ilto:' + user + String.fromCharCode(64) + domain;
+    var token = el.getAttribute('data-e');
+    if (!token) return;
+    var addr;
+    try {
+      addr = atob(token.split('').reverse().join(''));
+    } catch (e) {
+      return;                       // malformed token: leave the link untouched
+    }
+    el.href = 'ma' + 'ilto:' + addr;
     var label = el.querySelector('.js-mail-text');
-    if (label) label.textContent = user + String.fromCharCode(64) + domain;
+    if (label) label.textContent = addr;
   });
 
   /* -------------------------------------------------------- avatar */

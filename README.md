@@ -112,14 +112,28 @@ All the prose lives directly in the HTML, in clearly-marked sections:
 | Awards | `<div class="awards">` |
 | Service / teaching | `<div class="timeline">` |
 | Colours, fonts, spacing | `assets/css/style.css` (CSS variables at the top) |
+| Selected papers on homepage | `data/overrides.yaml` → `selected:` |
+
+The design is deliberately restrained: one ink-blue accent used almost only for
+links, serif headings, hairline rules, no gradients or ambient effects. Gold is
+reserved for the two Distinguished Paper awards. If you change `--accent` in
+`style.css`, everything follows.
 
 ### Privacy choices baked in
 
-- **Your email is never in the served HTML.** It is split across `data-user` /
-  `data-domain` attributes and joined by JavaScript at runtime, so scrapers
-  reading the raw page find no `user@domain` string. Without JS a human still
-  sees `guancheng.wang [at] ul.ie`. To change it, edit those two attributes on
-  the `.js-mail` links in `index.html` — there is nothing else to update.
+- **Your email is never in the served HTML.** It is stored as reversed base64
+  in a single `data-e` attribute and decoded in the browser. No fragment — not
+  the local part, not the domain, not an `[at]` spelling — appears in the page
+  source, so there is nothing for a harvester to reassemble. Splitting it into
+  adjacent `user` / `domain` attributes, the common trick, is *not* enough: a
+  one-line regex rejoins them.
+
+  To change the address, regenerate the token and paste it into both `.js-mail`
+  links in `index.html`:
+
+  ```bash
+  python3 -c "import base64;print(base64.b64encode(b'you@example.com').decode()[::-1])"
+  ```
 - **Fonts are self-hosted** in `assets/fonts/`, so the site makes zero
   third-party requests. Embedding Google Fonts directly would send every
   visitor's IP to Google, which EU courts have found to breach GDPR.
