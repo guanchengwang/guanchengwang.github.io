@@ -163,56 +163,60 @@
   }
 
   /* ------------------------------------------------------ mailto */
-  // The address is stored as reversed base64 in a single data-e attribute and
-  // decoded here. No fragment of it — not the local part, not the domain, not
-  // an "[at]" spelling — appears anywhere in the served HTML, so a harvester
-  // scraping the raw page finds nothing to reassemble.
-  Array.prototype.forEach.call(document.querySelectorAll('.js-mail'), function (el) {
-    var token = el.getAttribute('data-e');
-    if (!token) return;
-    var addr;
-    try {
-      addr = atob(token.split('').reverse().join(''));
-    } catch (e) {
-      return;                       // malformed token: leave the link untouched
-    }
+  // No mailto: link anywhere on this site, by design. A mailto: is a one-click
+  // target for automated mail and puts the address in the DOM as soon as it is
+  // wired up. Instead the address is stored as reversed base64, decoded only
+  // when a visitor asks for it, and then offered as plain text to copy.
+  var box = document.querySelector('.mailbox');
+  var revealBtn = box && box.querySelector('.js-mail-reveal');
+  if (box && revealBtn) {
+    revealBtn.addEventListener('click', function () {
+      var addr;
+      try {
+        addr = atob((box.getAttribute('data-e') || '').split('').reverse().join(''));
+      } catch (e) {
+        return;                     // malformed token: leave the button alone
+      }
 
-    var label = el.querySelector('.js-mail-text');
-    if (!label) {
-      // Icon link. Its text never shows the address, but writing the mailto:
-      // href on load would still park it in the live DOM for anything that
-      // executes JS and reads the tree. So arm it on the first sign of human
-      // intent — hover, keyboard focus or touch — which always precedes the
-      // click, keeping it a single click for real visitors.
-      var arm = function () {
-        if (el.dataset.armed) return;
-        el.href = 'ma' + 'ilto:' + addr;
-        el.dataset.armed = '1';
+      var code = document.createElement('code');
+      code.className = 'mailbox__addr';
+      code.textContent = addr;
+
+      var copy = document.createElement('button');
+      copy.type = 'button';
+      copy.className = 'mailbox__copy';
+      copy.textContent = 'Copy';
+
+      var flash = function (msg) {
+        copy.textContent = msg;
+        setTimeout(function () { copy.textContent = 'Copy'; }, 1800);
       };
-      ['mouseenter', 'focus', 'touchstart'].forEach(function (evt) {
-        el.addEventListener(evt, arm, { passive: true, once: true });
-      });
-      // Belt and braces: if a click somehow lands unarmed, arm and follow it.
-      el.addEventListener('click', function (e) {
-        if (el.dataset.armed) return;
-        e.preventDefault();
-        arm();
-        window.location.href = el.href;
-      });
-      return;
-    }
 
-    // Contact button: hold the address back until a human actually asks for
-    // it. Rendering it on load would put it on screen — and in the live DOM,
-    // where a headless scraper that executes JS would read it straight off.
-    el.addEventListener('click', function (e) {
-      if (el.dataset.revealed) return;   // already shown: let the mailto fire
-      e.preventDefault();
-      label.textContent = addr;
-      el.href = 'ma' + 'ilto:' + addr;
-      el.dataset.revealed = '1';
+      // Selecting the text is the fallback: navigator.clipboard needs a secure
+      // context, so it is unavailable over plain http and in some embeds.
+      var selectInstead = function () {
+        var range = document.createRange();
+        range.selectNodeContents(code);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        var mac = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent);
+        flash('Selected — press ' + (mac ? '⌘C' : 'Ctrl+C'));
+      };
+
+      copy.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(addr).then(function () { flash('Copied'); },
+                                                   selectInstead);
+        } else {
+          selectInstead();
+        }
+      });
+
+      box.replaceChild(code, revealBtn);
+      box.appendChild(copy);
     });
-  });
+  }
 
   /* -------------------------------------------------------- avatar */
   // Show the photo only once it actually loads; otherwise the monogram stays.

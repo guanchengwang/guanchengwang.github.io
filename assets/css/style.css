@@ -170,6 +170,12 @@ html[data-theme="light"] .icon-moon { display: none; }
   color: var(--text-mute); margin-left: .7rem; white-space: nowrap;
 }
 
+.hero__pron {
+  font-size: .85rem; color: var(--text-mute); margin: -.3rem 0 1.1rem;
+  display: flex; flex-wrap: wrap; gap: .1rem .8rem; align-items: baseline;
+}
+.hero__ipa { font-family: var(--mono); font-size: .8rem; }
+
 .hero__role { font-size: 1rem; margin-bottom: 1.7rem; color: var(--text-dim); }
 .hero__role strong { color: var(--text); font-weight: 600; }
 .hero__org { color: var(--text-dim); }
@@ -339,6 +345,19 @@ html[data-theme="light"] .icon-moon { display: none; }
 /* ---------------------------------------------------------------- contact */
 .contact { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 3rem; align-items: start; }
 .contact__lead { color: var(--text-dim); max-width: 52ch; margin-bottom: 1.5rem; font-size: .95rem; }
+.mailbox { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; }
+.mailbox__addr {
+  font-family: var(--mono); font-size: .92rem; color: var(--text);
+  padding: .55rem .9rem; border: 1px solid var(--line); border-radius: var(--radius);
+  user-select: all;   /* one click selects the whole address */
+}
+.mailbox__copy {
+  font-family: var(--sans); font-size: .82rem; font-weight: 500; cursor: pointer;
+  padding: .3rem 0; border: none; background: none; color: var(--text-mute);
+  border-bottom: 1px solid var(--line); transition: color .2s, border-color .2s;
+}
+.mailbox__copy:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
 .contact__addr { font-style: normal; font-size: .88rem; color: var(--text-dim); line-height: 1.85; }
 
 /* ----------------------------------------------------------------- footer */
