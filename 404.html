@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Guancheng Wang</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%236366f1'/><text x='50' y='68' font-size='54' font-family='system-ui,sans-serif' font-weight='700' fill='white' text-anchor='middle'>W</text></svg>">
+<!-- Root-relative: this page is served for any missing path, at any depth. -->
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/style.css">
+<style>
+  .oops { min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 2rem; }
+  .oops__code { font-family: var(--mono); font-size: .8rem; letter-spacing: .2em; color: var(--accent-2); }
+  .oops h1 { font-size: clamp(2.4rem, 8vw, 4rem); margin: .6rem 0 .8rem;
+             background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .oops p { color: var(--text-dim); max-width: 46ch; margin: 0 auto 2rem; }
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true">
+  <span class="aurora__blob aurora__blob--1"></span>
+  <span class="aurora__blob aurora__blob--2"></span>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<main class="oops">
+  <div>
+    <p class="oops__code">ERROR 404</p>
+    <h1>Page not found</h1>
+    <p>That page does not exist — it may have moved when this site replaced the
+       old Google Sites homepage.</p>
+    <a class="btn btn--primary btn--lg" href="/">Back to homepage</a>
+  </div>
+</main>
+
+<script>
+  (function () {
+    var stored = localStorage.getItem('gw-theme');
+    if (stored) document.documentElement.setAttribute('data-theme', stored);
+    else if (window.matchMedia('(prefers-color-scheme: light)').matches)
+      document.documentElement.setAttribute('data-theme', 'light');
+  })();
+</script>
+</body>
+</html>

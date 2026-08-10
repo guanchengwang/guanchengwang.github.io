@@ -1,0 +1,186 @@
+# ---------------------------------------------------------------------------
+# overrides.yaml — the human layer on top of automated publication fetching
+# ---------------------------------------------------------------------------
+# The daily GitHub Action pulls your record from DBLP, but DBLP is imperfect:
+# it lags on acceptances, indexes camera-ready titles, misses Chinese-language
+# venues, and knows nothing about awards or artifact links. Everything in this
+# file wins over whatever DBLP says.
+#
+# After editing, preview locally with:   python3 scripts/update_publications.py
+# ---------------------------------------------------------------------------
+
+author:
+  dblp_pid: "196/5011-1"
+  orcid: "0000-0002-4338-8813"
+  # Every spelling of your name that may appear in an author list, so the site
+  # knows which author to highlight. "GuanchengWang" covers the typo on the old
+  # Google Site; keep it in case it propagates.
+  aliases:
+    - "Guancheng Wang"
+    - "Guancheng Wang 0001"
+    - "GuanchengWang"
+    - "G. Wang"
+
+# ---------------------------------------------------------------------------
+# selected — the short list shown on the homepage. Everything else still
+# appears on publications.html. Titles must match the FINAL title, i.e. after
+# any `title:` correction in the patch rules below. A title that matches
+# nothing is reported as a warning when the script runs.
+# Leave this list empty and the homepage falls back to the six most recent
+# peer-reviewed papers.
+# ---------------------------------------------------------------------------
+selected:
+  - "SWE-ABS: Adversarial Benchmark Strengthening Exposes Inflated Success Rates on Test-based Benchmark"
+  - "Mutation-Guided Unit Test Generation With a Large Language Model"
+  - "Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles"
+  - "OrdinalFix: Fixing Compilation Errors via Shortest-Path CFL Reachability with Attribute Checking"
+  - "Probabilistic Delta Debugging"
+  - "History-Guided Configuration Diversification for Compiler Test-Program Generation"
+
+# ---------------------------------------------------------------------------
+# patch — corrections applied to entries DBLP already has.
+# `match` is the DBLP title (case- and punctuation-insensitive). Any field you
+# set here replaces the fetched value.
+# ---------------------------------------------------------------------------
+patch:
+  - match: "SWE-ABS: Adversarial Benchmark Strengthening Exposes Inflated Success Rates on Test-based Benchmark"
+    # Accepted at ICML'26; DBLP still only has the arXiv preprint.
+    type: conference
+    venue: "Forty-Third International Conference on Machine Learning"
+    venue_short: "ICML"
+    year: 2026
+    month: "July"
+    topics: ["LLM Agents", "Benchmarking"]
+
+  - match: "Mutation-Guided Unit Test Generation With a Large Language Model"
+    type: journal
+    venue: "IEEE Transactions on Software Engineering"
+    venue_short: "TSE"
+    topics: ["LLM4SE", "Test Generation", "Mutation Testing"]
+
+  - match: "OrdinalFix: Fixing Compilation Errors via Shortest-Path CFL Reachability"
+    # DBLP drops the subtitle that appears on the camera-ready version.
+    title: "OrdinalFix: Fixing Compilation Errors via Shortest-Path CFL Reachability with Attribute Checking"
+    venue: "38th IEEE/ACM International Conference on Automated Software Engineering"
+    venue_short: "ASE"
+    month: "September"
+    topics: ["Program Repair", "Program Analysis"]
+
+  - match: "Probabilistic Delta Debugging"
+    # DBLP records this one with a lowercase "debugging".
+    title: "Probabilistic Delta Debugging"
+    venue: "ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering"
+    venue_short: "ESEC/FSE"
+    month: "August"
+    award: "ACM SIGSOFT Distinguished Paper Award"
+    equal_contrib: ["Guancheng Wang", "Ruobing Shen"]
+    topics: ["Debugging", "Program Reduction"]
+
+  - match: "A Probabilistic Delta Debugging Approach for Abstract Syntax Trees"
+    venue: "34th IEEE International Symposium on Software Reliability Engineering"
+    venue_short: "ISSRE"
+    month: "October"
+    topics: ["Debugging", "Program Reduction"]
+
+  - match: "History-Guided Configuration Diversification for Compiler Test-Program Generation"
+    venue: "34th IEEE/ACM International Conference on Automated Software Engineering"
+    venue_short: "ASE"
+    month: "November"
+    award: "ACM SIGSOFT Distinguished Paper Award"
+    topics: ["Compiler Testing"]
+
+  - match: "Coverage Prediction for Accelerating Compiler Testing"
+    type: journal
+    venue: "IEEE Transactions on Software Engineering"
+    venue_short: "TSE"
+    topics: ["Compiler Testing", "Machine Learning"]
+
+  - match: "Call-Chain-Aware LLM-Based Test Generation for Java Projects"
+    topics: ["LLM4SE", "Test Generation"]
+
+  - match: "LLM-based Mockless Unit Test Generation for Java"
+    topics: ["LLM4SE", "Test Generation"]
+
+  - match: "BeSpec: Behavior-Level Specification Alignment for Code Generation"
+    topics: ["LLM4SE", "Code Generation"]
+
+  - match: "TATG: Tracking-Aware Testing Objective for LLM-based Test Generation"
+    topics: ["LLM4SE", "Test Generation"]
+
+  - match: "Characterizing the Failure Modes of LLMs in Resolving Real-World GitHub Issues"
+    topics: ["LLM Agents", "Program Repair"]
+
+  - match: "Uncertainty-Guided Label Rebalancing for CPS Safety Monitoring"
+    topics: ["Cyber-Physical Systems", "Uncertainty"]
+
+# ---------------------------------------------------------------------------
+# extra — publications DBLP does not index at all.
+# Same shape as a generated entry. These are merged in and sorted normally.
+# ---------------------------------------------------------------------------
+extra:
+  - title: "Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles"
+    authors: ["Qinghua Xu", "Guancheng Wang", "Lionel C. Briand", "Kui Liu"]
+    year: 2026
+    month: "March"
+    type: journal
+    venue: "ACM Transactions on Software Engineering and Methodology"
+    venue_short: "TOSEM"
+    status: "Open Access"
+    arxiv: "2506.02943"
+    topics: ["LLM4SE", "Test Generation", "Test Oracles"]
+
+  - title: "Bayesian Program Analysis"
+    authors:
+      ["Xin Zhang", "Guancheng Wang", "Yiqian Wu", "Yifan Chen", "Tianchi Li",
+       "Yifan Zhang", "Yingfei Xiong"]
+    year: 2024
+    month: "April"
+    type: journal
+    venue: "Chinese Journal of Computers (计算机学报)"
+    venue_short: "CJC"
+    note: "Vol. 46, No. 10 · in Chinese"
+    language: "zh"
+    topics: ["Program Analysis"]
+
+  - title: "Partial Evaluator for peC and Its Application to Compiler Validation"
+    authors: ["Degui Guo", "Guancheng Wang", "Shuai Lv", "Lei Liu"]
+    year: 2016
+    month: "December"
+    type: journal
+    venue: "Journal of Software (软件学报)"
+    venue_short: "JOS"
+    note: "in Chinese"
+    language: "zh"
+    topics: ["Compiler Testing", "Program Analysis"]
+
+# ---------------------------------------------------------------------------
+# merge — collapse an arXiv preprint into its published version.
+# Fuzzy title matching handles most cases automatically; list a pair here only
+# when the preprint was retitled between arXiv and camera-ready.
+# The preprint disappears from the list and its arXiv link moves onto the
+# published entry.
+# ---------------------------------------------------------------------------
+merge:
+  - preprint: "On Mutation-Guided Unit Test Generation"
+    published: "Mutation-Guided Unit Test Generation With a Large Language Model"
+  - preprint: "Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles"
+    published: "Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles"
+
+# ---------------------------------------------------------------------------
+# hide — exact titles to drop entirely (name collisions, withdrawn work).
+# ---------------------------------------------------------------------------
+hide: []
+
+# ---------------------------------------------------------------------------
+# links — artifacts per paper, keyed by title. Add as you release them.
+# Supported keys: pdf, code, slides, video, poster, data
+# ---------------------------------------------------------------------------
+links:
+  "Probabilistic Delta Debugging":
+    code: "https://github.com/Amocy-Wang/ProbDD"
+  "A Probabilistic Delta Debugging Approach for Abstract Syntax Trees":
+    code: "https://github.com/Amocy-Wang/T-PDD"
+  "Mutation-Guided Unit Test Generation With a Large Language Model":
+    code: "https://github.com/Amocy-Wang/MUTGEN"
+  "Call-Chain-Aware LLM-Based Test Generation for Java Projects":
+    code: "https://github.com/Amocy-Wang/CAT"

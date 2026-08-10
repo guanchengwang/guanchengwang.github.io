@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guancheng Wang — Software Testing, Debugging &amp; LLMs for Software Engineering</title>
+<meta name="description" content="Guancheng Wang is a Senior Research Fellow at Lero, the Research Ireland Centre for Software, University of Limerick. He works on software testing and debugging, combining large language models, program analysis and automated reasoning.">
+<meta name="author" content="Guancheng Wang">
+<link rel="canonical" href="https://guanchengwang.github.io/">
+
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Guancheng Wang — Senior Research Fellow, Lero @ University of Limerick">
+<meta property="og:description" content="Software testing and debugging: LLMs, program analysis and automated reasoning for test generation and debugging.">
+<meta property="og:url" content="https://guanchengwang.github.io/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@Amocy_W">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%236366f1'/><text x='50' y='68' font-size='54' font-family='system-ui,sans-serif' font-weight='700' fill='white' text-anchor='middle'>W</text></svg>">
+
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Guancheng Wang",
+  "alternateName": "王冠成",
+  "jobTitle": "Senior Research Fellow",
+  "url": "https://guanchengwang.github.io/",
+  "affiliation": {
+    "@type": "Organization",
+    "name": "Lero, the Research Ireland Centre for Software, University of Limerick"
+  },
+  "alumniOf": { "@type": "Organization", "name": "Peking University" },
+  "knowsAbout": ["Software Testing", "Automated Debugging", "Large Language Models",
+                 "Program Analysis", "Compiler Testing", "Automated Program Repair"],
+  "identifier": "https://orcid.org/0000-0002-4338-8813",
+  "sameAs": [
+    "https://scholar.google.com/citations?user=WbkgdnIAAAAJ",
+    "https://dblp.org/pid/196/5011-1",
+    "https://github.com/Amocy-Wang",
+    "https://orcid.org/0000-0002-4338-8813",
+    "https://x.com/Amocy_W"
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="aurora" aria-hidden="true">
+  <span class="aurora__blob aurora__blob--1"></span>
+  <span class="aurora__blob aurora__blob--2"></span>
+  <span class="aurora__blob aurora__blob--3"></span>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="#top"><span class="nav__mark">GW</span><span class="nav__name">Guancheng Wang</span></a>
+    <nav class="nav__links" aria-label="Section navigation">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="publications.html">Full list</a>
+      <a href="#awards">Awards</a>
+      <a href="#service">Service</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch colour theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+    </button>
+    <button class="nav__burger" id="navBurger" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" id="top">
+  <div class="wrap hero__grid">
+    <div class="hero__text">
+      <p class="hero__eyebrow reveal">Lero · University of Limerick</p>
+      <h1 class="hero__name reveal">Guancheng Wang<span class="hero__cn">王冠成</span></h1>
+      <p class="hero__role reveal">
+        Senior Research Fellow<br>
+        <span class="hero__org">Research Ireland Centre for Software, Lero</span><br>
+        <span class="hero__org">University of Limerick, Ireland</span>
+      </p>
+      <p class="hero__bio reveal">
+        I am a Senior Research Fellow at <strong>Lero</strong>, the Research Ireland Centre for Software at the
+        University of Limerick, working with <a href="https://www.lbriand.info/" target="_blank" rel="noopener">Prof. Lionel C. Briand</a>.
+        Before joining Lero I received my Ph.D. in Computer Science from <strong>Peking University</strong>, supervised by
+        <a href="https://xiongyingfei.github.io/" target="_blank" rel="noopener">Prof. Yingfei Xiong</a> and
+        Prof. Lu Zhang.
+      </p>
+      <p class="hero__bio reveal">
+        My research is on <strong>software testing and debugging</strong> — in particular how large language models,
+        program analysis and automated reasoning can be combined to make test generation and debugging
+        genuinely reliable rather than merely plausible.
+      </p>
+
+      <div class="hero__links reveal">
+        <a class="btn btn--primary js-mail" href="#contact" data-user="guancheng.wang" data-domain="ul.ie">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>Email</a>
+        <a class="btn" href="https://scholar.google.com/citations?user=WbkgdnIAAAAJ" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L1 9l11 6 9-4.9V17h2V9z"/><path d="M6 12.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5"/></svg>Scholar</a>
+        <a class="btn" href="https://dblp.org/pid/196/5011-1" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h10l6 6v10H4z"/><path d="M14 4v6h6"/></svg>DBLP</a>
+        <a class="btn" href="https://github.com/Amocy-Wang" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.9a3.4 3.4 0 0 0-1-2.6c3.1-.3 6.4-1.5 6.4-7A5.4 5.4 0 0 0 19 3.8a5 5 0 0 0-.1-3.7s-1.2-.3-3.9 1.5a13.4 13.4 0 0 0-7 0C5.3.8 4.1 1.1 4.1 1.1a5 5 0 0 0-.1 3.7 5.4 5.4 0 0 0-1.4 3.7c0 5.5 3.3 6.7 6.4 7a3.4 3.4 0 0 0-1 2.6V22"/></svg>GitHub</a>
+        <a class="btn" href="https://orcid.org/0000-0002-4338-8813" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 8v8M9 6h.01M13 16V9h2.5a3.5 3.5 0 0 1 0 7z"/></svg>ORCID</a>
+        <a class="btn" href="https://x.com/Amocy_W" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M21 3L3 21"/></svg>X</a>
+      </div>
+    </div>
+
+    <aside class="hero__side">
+      <figure class="avatar reveal">
+        <!-- Drop a square photo at assets/img/avatar.jpg and it replaces the monogram automatically. -->
+        <img id="avatarImg" src="assets/img/avatar.jpg" alt="Portrait of Guancheng Wang" hidden>
+        <div class="avatar__mono" id="avatarMono" aria-hidden="true"><span>GW</span></div>
+      </figure>
+      <div class="sidecard reveal">
+        <h2 class="sidecard__title">Research interests</h2>
+        <ul class="sidecard__list">
+          <li>LLM-based test generation</li>
+          <li>Automated debugging &amp; program reduction</li>
+          <li>Compiler testing &amp; validation</li>
+          <li>Program analysis &amp; repair</li>
+          <li>Evaluation of LLM coding agents</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ===================== NEWS ===================== -->
+<section class="section" id="about">
+  <div class="wrap">
+    <h2 class="section__title reveal"><span class="section__num">01</span>News</h2>
+    <!-- Add a new item by copying one <li> block. Newest first. -->
+    <ul class="news reveal">
+      <li class="news__item">
+        <time class="news__date">Jul 2026</time>
+        <p><em>SWE-ABS</em>, on how adversarial benchmark strengthening exposes inflated success rates on
+        test-based benchmarks, is accepted at <strong>ICML 2026</strong>.</p>
+      </li>
+      <li class="news__item">
+        <time class="news__date">Apr 2026</time>
+        <p><em>Mutation-Guided Unit Test Generation with a Large Language Model</em> appears in
+        <strong>IEEE Transactions on Software Engineering</strong>.</p>
+      </li>
+      <li class="news__item">
+        <time class="news__date">Mar 2026</time>
+        <p><em>Hallucination to Consensus</em>, on multi-agent LLMs for end-to-end test generation with accurate
+        oracles, is published in <strong>ACM TOSEM</strong>.</p>
+      </li>
+      <li class="news__item">
+        <time class="news__date">2026</time>
+        <p>Serving on the Program Committees of <strong>ASE 2026</strong> and <strong>FSE 2026</strong>.</p>
+      </li>
+      <li class="news__item">
+        <time class="news__date">2025</time>
+        <p>Served on the Program Committee of <strong>ASE 2025</strong>.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== RESEARCH ===================== -->
+<section class="section" id="research">
+  <div class="wrap">
+    <h2 class="section__title reveal"><span class="section__num">02</span>Research</h2>
+    <p class="section__lede reveal">
+      Software fails in ways that are hard to reproduce, hard to localise and hard to test for. My work builds
+      automated techniques that attack that problem from two directions: statistical and probabilistic reasoning
+      over program structure, and large language models grounded by program analysis so their output can be
+      trusted. Five threads run through it.
+    </p>
+
+    <div class="cards">
+      <article class="card reveal">
+        <span class="card__idx">01</span>
+        <h3>LLM-Based Test Generation</h3>
+        <p>Making generated tests actually useful — guided by mutation scores, aware of call chains across a
+        project, free of brittle mocks, and equipped with oracles that multiple agents agree on rather than
+        hallucinate.</p>
+        <p class="card__tags"><span>TSE&nbsp;2026</span><span>TOSEM&nbsp;2026</span><span>MUTGEN</span><span>CAT</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card__idx">02</span>
+        <h3>Automated Debugging &amp; Program Reduction</h3>
+        <p>Delta debugging reframed probabilistically: model the likelihood that each element is relevant, and
+        spend test executions where they pay off. <em>ProbDD</em> and its abstract-syntax-tree successor reduce
+        failure-inducing inputs substantially faster than the classical algorithm.</p>
+        <p class="card__tags"><span>FSE&nbsp;2021</span><span>ISSRE&nbsp;2023</span><span>Distinguished&nbsp;Paper</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card__idx">03</span>
+        <h3>Compiler Testing &amp; Validation</h3>
+        <p>Compilers are tested by generating programs, which is cheap, and by running them, which is not.
+        Predicting coverage before execution and diversifying configurations using testing history both push
+        far more bugs out of the same budget.</p>
+        <p class="card__tags"><span>ASE&nbsp;2019</span><span>TSE&nbsp;2021</span><span>Distinguished&nbsp;Paper</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card__idx">04</span>
+        <h3>Program Analysis &amp; Repair</h3>
+        <p>Fixing compilation errors as a shortest-path CFL-reachability problem with attribute checking, and
+        Bayesian formulations that let a static analysis reason about uncertainty instead of pretending it
+        does not exist.</p>
+        <p class="card__tags"><span>ASE&nbsp;2023</span><span>OrdinalFix</span><span>Bayesian&nbsp;Analysis</span></p>
+      </article>
+
+      <article class="card reveal">
+        <span class="card__idx">05</span>
+        <h3>Evaluating LLM Agents Honestly</h3>
+        <p>Test-based benchmarks flatter coding agents: weak test suites accept wrong patches. Strengthening
+        benchmarks adversarially reveals how much reported success is real, and characterising failure modes on
+        genuine GitHub issues shows where agents still break.</p>
+        <p class="card__tags"><span>ICML&nbsp;2026</span><span>SWE-ABS</span><span>Benchmarking</span></p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PUBLICATIONS ===================== -->
+<section class="section" id="publications">
+  <div class="wrap">
+    <h2 class="section__title reveal"><span class="section__num">03</span>Publications</h2>
+    <p class="section__lede reveal">
+      A selection of my work. Authors marked <sup>#</sup> contributed equally.
+    </p>
+
+    <div class="publist publist--selected">
+<!-- SELECTED:START -->
+        <article class="pub" data-type="journal" data-year="2026" data-topics="LLM4SE Test Generation Test Oracles" data-title="Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles" data-authors="Qinghua Xu Guancheng Wang Lionel C. Briand Kui Liu" data-venue="ACM Transactions on Software Engineering and Methodology TOSEM">
+          <div class="pub__rail"><span class="pub__venue-tag">TOSEM</span><span class="pub__year">2026</span></div>
+          <div class="pub__body">
+            <h3 class="pub__title">Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles</h3>
+            <p class="pub__authors"><span class='author'>Qinghua Xu</span>, <span class="author me">Guancheng Wang</span>, <span class='author'>Lionel C. Briand</span>, <span class='author'>Kui Liu</span></p>
+            <p class="pub__venue">ACM Transactions on Software Engineering and Methodology</p>
+            <div class="pub__meta"><span class="badge badge--status">Open Access</span></div>
+            <div class="pub__links"><a class="publink publink--arxiv" href="https://arxiv.org/abs/2506.02943" target="_blank" rel="noopener">arXiv</a></div>
+          </div>
+        </article>
+        <article class="pub" data-type="journal" data-year="2026" data-topics="LLM4SE Test Generation Mutation Testing" data-title="Mutation-Guided Unit Test Generation With a Large Language Model" data-authors="Guancheng Wang Qinghua Xu Lionel C. Briand Kui Liu" data-venue="IEEE Transactions on Software Engineering TSE">
+          <div class="pub__rail"><span class="pub__venue-tag">TSE</span><span class="pub__year">2026</span></div>
+          <div class="pub__body">
+            <h3 class="pub__title">Mutation-Guided Unit Test Generation With a Large Language Model</h3>
+            <p class="pub__authors"><span class="author me">Guancheng Wang</span>, <span class='author'>Qinghua Xu</span>, <span class='author'>Lionel C. Briand</span>, <span class='author'>Kui Liu</span></p>
+            <p class="pub__venue">IEEE Transactions on Software Engineering, 52(5):1657-1671</p>
+            <div class="pub__meta"></div>
+            <div class="pub__links"><a class="publink publink--doi" href="https://doi.org/10.1109/TSE.2026.3682975" target="_blank" rel="noopener">DOI</a><a class="publink publink--arxiv" href="https://arxiv.org/abs/2506.02954" target="_blank" rel="noopener">arXiv</a><a class="publink publink--code" href="https://github.com/Amocy-Wang/MUTGEN" target="_blank" rel="noopener">Code</a></div>
+          </div>
+        </article>
+        <article class="pub" data-type="conference" data-year="2026" data-topics="LLM Agents Benchmarking" data-title="SWE-ABS: Adversarial Benchmark Strengthening Exposes Inflated Success Rates on Test-based Benchmark" data-authors="Boxi Yu Yang Cao Yuzhong Zhang Liting Lin Junjielong Xu Zhiqing Zhong Qinghua Xu Guancheng Wang Jialun Cao Shing-Chi Cheung Pinjia He Lionel C. Briand" data-venue="Forty-Third International Conference on Machine Learning ICML">
+          <div class="pub__rail"><span class="pub__venue-tag">ICML</span><span class="pub__year">2026</span></div>
+          <div class="pub__body">
+            <h3 class="pub__title">SWE-ABS: Adversarial Benchmark Strengthening Exposes Inflated Success Rates on Test-based Benchmark</h3>
+            <p class="pub__authors"><span class='author'>Boxi Yu</span>, <span class='author'>Yang Cao</span>, <span class='author'>Yuzhong Zhang</span>, <span class='author'>Liting Lin</span>, <span class='author'>Junjielong Xu</span>, <span class='author'>Zhiqing Zhong</span>, <span class='author'>Qinghua Xu</span>, <span class="author me">Guancheng Wang</span>, <span class='author'>Jialun Cao</span>, <span class='author'>Shing-Chi Cheung</span>, <span class='author'>Pinjia He</span>, <span class='author'>Lionel C. Briand</span></p>
+            <p class="pub__venue">Forty-Third International Conference on Machine Learning</p>
+            <div class="pub__meta"></div>
+            <div class="pub__links"><a class="publink publink--arxiv" href="https://arxiv.org/abs/2603.00520" target="_blank" rel="noopener">arXiv</a></div>
+          </div>
+        </article>
+        <article class="pub" data-type="conference" data-year="2023" data-topics="Program Repair Program Analysis" data-title="OrdinalFix: Fixing Compilation Errors via Shortest-Path CFL Reachability with Attribute Checking" data-authors="Wenjie Zhang Guancheng Wang Junjie Chen Yingfei Xiong Yong Liu Lu Zhang" data-venue="38th IEEE/ACM International Conference on Automated Software Engineering ASE">
+          <div class="pub__rail"><span class="pub__venue-tag">ASE</span><span class="pub__year">2023</span></div>
+          <div class="pub__body">
+            <h3 class="pub__title">OrdinalFix: Fixing Compilation Errors via Shortest-Path CFL Reachability with Attribute Checking</h3>
+            <p class="pub__authors"><span class='author'>Wenjie Zhang</span>, <span class="author me">Guancheng Wang</span>, <span class='author'>Junjie Chen</span>, <span class='author'>Yingfei Xiong</span>, <span class='author'>Yong Liu</span>, <span class='author'>Lu Zhang</span></p>
+            <p class="pub__venue">38th IEEE/ACM International Conference on Automated Software Engineering, pp. 1200-1211</p>
+            <div class="pub__meta"></div>
+            <div class="pub__links"><a class="publink publink--doi" href="https://doi.org/10.1109/ASE56229.2023.00072" target="_blank" rel="noopener">DOI</a><a class="publink publink--arxiv" href="https://arxiv.org/abs/2309.06771" target="_blank" rel="noopener">arXiv</a></div>
+          </div>
+        </article>
+        <article class="pub" data-type="conference" data-year="2021" data-topics="Debugging Program Reduction" data-title="Probabilistic Delta Debugging" data-authors="Guancheng Wang Ruobing Shen Junjie Chen Yingfei Xiong Lu Zhang" data-venue="ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering ESEC/FSE">
+          <div class="pub__rail"><span class="pub__venue-tag">ESEC/FSE</span><span class="pub__year">2021</span></div>
+          <div class="pub__body">
+            <h3 class="pub__title">Probabilistic Delta Debugging</h3>
+            <p class="pub__authors"><span class="author me">Guancheng Wang<sup>#</sup></span>, <span class='author'>Ruobing Shen<sup>#</sup></span>, <span class='author'>Junjie Chen</span>, <span class='author'>Yingfei Xiong</span>, <span class='author'>Lu Zhang</span></p>
+            <p class="pub__venue">ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering, pp. 881-892</p>
+            <div class="pub__meta"><span class="badge badge--award"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg>ACM SIGSOFT Distinguished Paper Award</span></div>
+            <div class="pub__links"><a class="publink publink--doi" href="https://doi.org/10.1145/3468264.3468625" target="_blank" rel="noopener">DOI</a><a class="publink publink--code" href="https://github.com/Amocy-Wang/ProbDD" target="_blank" rel="noopener">Code</a></div>
+          </div>
+        </article>
+        <article class="pub" data-type="conference" data-year="2019" data-topics="Compiler Testing" data-title="History-Guided Configuration Diversification for Compiler Test-Program Generation" data-authors="Junjie Chen Guancheng Wang Dan Hao Yingfei Xiong Hongyu Zhang Lu Zhang" data-venue="34th IEEE/ACM International Conference on Automated Software Engineering ASE">
+          <div class="pub__rail"><span class="pub__venue-tag">ASE</span><span class="pub__year">2019</span></div>
+          <div class="pub__body">
+            <h3 class="pub__title">History-Guided Configuration Diversification for Compiler Test-Program Generation</h3>
+            <p class="pub__authors"><span class='author'>Junjie Chen</span>, <span class="author me">Guancheng Wang</span>, <span class='author'>Dan Hao</span>, <span class='author'>Yingfei Xiong</span>, <span class='author'>Hongyu Zhang</span>, <span class='author'>Lu Zhang</span></p>
+            <p class="pub__venue">34th IEEE/ACM International Conference on Automated Software Engineering, pp. 305-316</p>
+            <div class="pub__meta"><span class="badge badge--award"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg>ACM SIGSOFT Distinguished Paper Award</span></div>
+            <div class="pub__links"><a class="publink publink--doi" href="https://doi.org/10.1109/ASE.2019.00037" target="_blank" rel="noopener">DOI</a></div>
+          </div>
+        </article>
+        <!-- SELECTED:END -->
+    </div>
+
+    <p class="publist__more reveal">
+      <a class="btn btn--primary" href="publications.html">
+        View the full publication list
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <span class="publist__stamp">Updated automatically from DBLP · <span class="updated"><!-- UPDATED:START --><time datetime="2026-08-10T12:55:18Z">10 August 2026</time><!-- UPDATED:END --></span></span>
+    </p>
+  </div>
+</section>
+
+<!-- ===================== AWARDS ===================== -->
+<section class="section" id="awards">
+  <div class="wrap">
+    <h2 class="section__title reveal"><span class="section__num">04</span>Awards &amp; Honours</h2>
+    <div class="awards">
+      <article class="award reveal">
+        <div class="award__medal" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg>
+        </div>
+        <div>
+          <h3>ACM SIGSOFT Distinguished Paper Award</h3>
+          <p>ESEC/FSE 2021 — <em>Probabilistic Delta Debugging</em></p>
+        </div>
+        <span class="award__year">2021</span>
+      </article>
+      <article class="award reveal">
+        <div class="award__medal" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg>
+        </div>
+        <div>
+          <h3>ACM SIGSOFT Distinguished Paper Award</h3>
+          <p>ASE 2019 — <em>History-Guided Configuration Diversification for Compiler Test-Program Generation</em></p>
+        </div>
+        <span class="award__year">2019</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVICE ===================== -->
+<section class="section" id="service">
+  <div class="wrap">
+    <h2 class="section__title reveal"><span class="section__num">05</span>Academic Service</h2>
+    <div class="timeline">
+      <div class="tl reveal"><span class="tl__year">2026</span><div class="tl__body">
+        <p><strong>Program Committee</strong> — ASE 2026, FSE 2026</p></div></div>
+      <div class="tl reveal"><span class="tl__year">2025</span><div class="tl__body">
+        <p><strong>Program Committee</strong> — ASE 2025</p></div></div>
+      <div class="tl reveal"><span class="tl__year">2024</span><div class="tl__body">
+        <p><strong>Program Committee</strong> — Internetware 2024</p>
+        <p><strong>Artifact Evaluation Committee</strong> — PLDI 2024, ECOOP 2024</p>
+        <p><strong>Co-reviewer</strong> — ICSE 2024</p></div></div>
+      <div class="tl reveal"><span class="tl__year">2023</span><div class="tl__body">
+        <p><strong>Junior Program Committee</strong> — MSR 2023</p>
+        <p><strong>Co-reviewer</strong> — ICSE 2023</p></div></div>
+      <div class="tl reveal"><span class="tl__year">2022</span><div class="tl__body">
+        <p><strong>Artifact Evaluation Committee</strong> — ISSTA 2022</p>
+        <p><strong>Co-reviewer</strong> — FSE 2022</p></div></div>
+      <div class="tl reveal"><span class="tl__year">2021</span><div class="tl__body">
+        <p><strong>Artifact Evaluation Board</strong> — Journal of Systems Research</p>
+        <p><strong>Co-reviewer</strong> — ICSE 2021, FSE 2021, AAAI 2021</p></div></div>
+      <div class="tl reveal"><span class="tl__year">2020</span><div class="tl__body">
+        <p><strong>Co-reviewer</strong> — IEEE TSE, ICSE 2020, FSE 2020</p></div></div>
+      <div class="tl reveal"><span class="tl__year">2019</span><div class="tl__body">
+        <p><strong>Co-reviewer</strong> — FASE 2019</p>
+        <p><strong>Student volunteer</strong> — ISSTA 2019</p></div></div>
+      <div class="tl reveal"><span class="tl__year">2018</span><div class="tl__body">
+        <p><strong>Co-reviewer</strong> — ICSE 2018, APSEC 2018</p></div></div>
+    </div>
+
+    <h3 class="subhead reveal">Teaching</h3>
+    <div class="timeline">
+      <div class="tl reveal"><span class="tl__year">2018</span><div class="tl__body">
+        <p><strong>Teaching Assistant</strong> — Compiler Techniques, Peking University <span class="muted">(Fall 2018)</span></p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="section section--contact" id="contact">
+  <div class="wrap">
+    <h2 class="section__title reveal"><span class="section__num">06</span>Contact</h2>
+    <div class="contact reveal">
+      <div>
+        <p class="contact__lead">I am always glad to hear from people working on testing, debugging and
+        trustworthy applications of LLMs to software engineering — collaborations, student enquiries or
+        a question about a paper.</p>
+        <a class="btn btn--primary btn--lg js-mail" href="#" data-user="guancheng.wang" data-domain="ul.ie"><span class="js-mail-text">guancheng.wang [at] ul.ie</span></a>
+      </div>
+      <address class="contact__addr">
+        Lero — the Research Ireland Centre for Software<br>
+        University of Limerick<br>
+        Limerick, V94 T9PX<br>
+        Ireland
+      </address>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p>© <span id="year">2026</span> Guancheng Wang</p>
+    <p class="footer__meta">Built as a static site · publications refreshed nightly from DBLP &amp; Google Scholar</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

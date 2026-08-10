@@ -1,0 +1,818 @@
+{
+  "generated_at": "2026-08-10T12:55:18Z",
+  "counts": {
+    "papers": 16,
+    "peer_reviewed": 10,
+    "preprints": 6,
+    "selected": 6
+  },
+  "publications": [
+    {
+      "title": "Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles",
+      "authors": [
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Kui Liu",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "month": "March",
+      "type": "journal",
+      "venue": "ACM Transactions on Software Engineering and Methodology",
+      "venue_short": "TOSEM",
+      "status": "Open Access",
+      "arxiv": "2506.02943",
+      "topics": [
+        "LLM4SE",
+        "Test Generation",
+        "Test Oracles"
+      ],
+      "id": "extra/hallucinationtoconsensusmultiagentllmsfo",
+      "source": "manual",
+      "url": "https://doi.org/10.48550/arXiv.2506.02943",
+      "selected": true
+    },
+    {
+      "id": "journals/tse/WangXBL26",
+      "title": "Mutation-Guided Unit Test Generation With a Large Language Model",
+      "authors": [
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Kui Liu",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "type": "journal",
+      "venue": "IEEE Transactions on Software Engineering",
+      "venue_short": "TSE",
+      "volume": "52",
+      "number": "5",
+      "pages": "1657-1671",
+      "doi": "10.1109/TSE.2026.3682975",
+      "arxiv": "2506.02954",
+      "url": "https://doi.org/10.1109/TSE.2026.3682975",
+      "source": "dblp",
+      "topics": [
+        "LLM4SE",
+        "Test Generation",
+        "Mutation Testing"
+      ],
+      "links": {
+        "code": "https://github.com/Amocy-Wang/MUTGEN"
+      },
+      "selected": true
+    },
+    {
+      "id": "journals/corr/abs-2603-00520",
+      "title": "SWE-ABS: Adversarial Benchmark Strengthening Exposes Inflated Success Rates on Test-based Benchmark",
+      "authors": [
+        {
+          "name": "Boxi Yu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yang Cao",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yuzhong Zhang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Liting Lin",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Junjielong Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Zhiqing Zhong",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Jialun Cao",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Shing-Chi Cheung",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Pinjia He",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "type": "conference",
+      "venue": "Forty-Third International Conference on Machine Learning",
+      "venue_short": "ICML",
+      "volume": null,
+      "number": null,
+      "pages": null,
+      "doi": null,
+      "arxiv": "2603.00520",
+      "url": "https://doi.org/10.48550/arXiv.2603.00520",
+      "source": "dblp",
+      "month": "July",
+      "topics": [
+        "LLM Agents",
+        "Benchmarking"
+      ],
+      "selected": true
+    },
+    {
+      "id": "journals/corr/abs-2607-02949",
+      "title": "BeSpec: Behavior-Level Specification Alignment for Code Generation",
+      "authors": [
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Boxi Yu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "type": "preprint",
+      "venue": "arXiv preprint",
+      "venue_short": "arXiv",
+      "volume": null,
+      "number": null,
+      "pages": null,
+      "doi": null,
+      "arxiv": "2607.02949",
+      "url": "https://doi.org/10.48550/arXiv.2607.02949",
+      "source": "dblp",
+      "topics": [
+        "LLM4SE",
+        "Code Generation"
+      ],
+      "selected": false
+    },
+    {
+      "id": "journals/corr/abs-2604-22046",
+      "title": "Call-Chain-Aware LLM-Based Test Generation for Java Projects",
+      "authors": [
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Zhaoqiang Guo",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Kui Liu",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "type": "preprint",
+      "venue": "arXiv preprint",
+      "venue_short": "arXiv",
+      "volume": null,
+      "number": null,
+      "pages": null,
+      "doi": null,
+      "arxiv": "2604.22046",
+      "url": "https://doi.org/10.48550/arXiv.2604.22046",
+      "source": "dblp",
+      "topics": [
+        "LLM4SE",
+        "Test Generation"
+      ],
+      "links": {
+        "code": "https://github.com/Amocy-Wang/CAT"
+      },
+      "selected": false
+    },
+    {
+      "id": "journals/corr/abs-2605-12270",
+      "title": "Characterizing the Failure Modes of LLMs in Resolving Real-World GitHub Issues",
+      "authors": [
+        {
+          "name": "Yanjie Jiang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yian Huang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Junjie Chen",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Hui Liu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lionel Briand",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "type": "preprint",
+      "venue": "arXiv preprint",
+      "venue_short": "arXiv",
+      "volume": null,
+      "number": null,
+      "pages": null,
+      "doi": null,
+      "arxiv": "2605.12270",
+      "url": "https://doi.org/10.48550/arXiv.2605.12270",
+      "source": "dblp",
+      "topics": [
+        "LLM Agents",
+        "Program Repair"
+      ],
+      "selected": false
+    },
+    {
+      "id": "journals/corr/abs-2605-26851",
+      "title": "LLM-based Mockless Unit Test Generation for Java",
+      "authors": [
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Zhaoqiang Guo",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Kui Liu",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "type": "preprint",
+      "venue": "arXiv preprint",
+      "venue_short": "arXiv",
+      "volume": null,
+      "number": null,
+      "pages": null,
+      "doi": null,
+      "arxiv": "2605.26851",
+      "url": "https://doi.org/10.48550/arXiv.2605.26851",
+      "source": "dblp",
+      "topics": [
+        "LLM4SE",
+        "Test Generation"
+      ],
+      "selected": false
+    },
+    {
+      "id": "journals/corr/abs-2607-03194",
+      "title": "TATG: Tracking-Aware Testing Objective for LLM-based Test Generation",
+      "authors": [
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "type": "preprint",
+      "venue": "arXiv preprint",
+      "venue_short": "arXiv",
+      "volume": null,
+      "number": null,
+      "pages": null,
+      "doi": null,
+      "arxiv": "2607.03194",
+      "url": "https://doi.org/10.48550/arXiv.2607.03194",
+      "source": "dblp",
+      "topics": [
+        "LLM4SE",
+        "Test Generation"
+      ],
+      "selected": false
+    },
+    {
+      "id": "journals/corr/abs-2603-25670",
+      "title": "Uncertainty-Guided Label Rebalancing for CPS Safety Monitoring",
+      "authors": [
+        {
+          "name": "John Ayotunde",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2026,
+      "type": "preprint",
+      "venue": "arXiv preprint",
+      "venue_short": "arXiv",
+      "volume": null,
+      "number": null,
+      "pages": null,
+      "doi": null,
+      "arxiv": "2603.25670",
+      "url": "https://doi.org/10.48550/arXiv.2603.25670",
+      "source": "dblp",
+      "topics": [
+        "Cyber-Physical Systems",
+        "Uncertainty"
+      ],
+      "selected": false
+    },
+    {
+      "title": "Bayesian Program Analysis",
+      "authors": [
+        {
+          "name": "Xin Zhang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Yiqian Wu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yifan Chen",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Tianchi Li",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yifan Zhang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yingfei Xiong",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2024,
+      "month": "April",
+      "type": "journal",
+      "venue": "Chinese Journal of Computers (计算机学报)",
+      "venue_short": "CJC",
+      "note": "Vol. 46, No. 10 · in Chinese",
+      "language": "zh",
+      "topics": [
+        "Program Analysis"
+      ],
+      "id": "extra/bayesianprogramanalysis",
+      "source": "manual",
+      "selected": false
+    },
+    {
+      "id": "conf/issre/WangWZXZZ23",
+      "title": "A Probabilistic Delta Debugging Approach for Abstract Syntax Trees",
+      "authors": [
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Yiqian Wu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Qihao Zhu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yingfei Xiong",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Xin Zhang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lu Zhang",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2023,
+      "type": "conference",
+      "venue": "34th IEEE International Symposium on Software Reliability Engineering",
+      "venue_short": "ISSRE",
+      "volume": null,
+      "number": null,
+      "pages": "763-773",
+      "doi": "10.1109/ISSRE59848.2023.00060",
+      "arxiv": null,
+      "url": "https://doi.org/10.1109/ISSRE59848.2023.00060",
+      "source": "dblp",
+      "month": "October",
+      "topics": [
+        "Debugging",
+        "Program Reduction"
+      ],
+      "links": {
+        "code": "https://github.com/Amocy-Wang/T-PDD"
+      },
+      "selected": false
+    },
+    {
+      "id": "conf/kbse/ZhangWCXLZ23",
+      "title": "OrdinalFix: Fixing Compilation Errors via Shortest-Path CFL Reachability with Attribute Checking",
+      "authors": [
+        {
+          "name": "Wenjie Zhang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Junjie Chen",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yingfei Xiong",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yong Liu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lu Zhang",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2023,
+      "type": "conference",
+      "venue": "38th IEEE/ACM International Conference on Automated Software Engineering",
+      "venue_short": "ASE",
+      "volume": null,
+      "number": null,
+      "pages": "1200-1211",
+      "doi": "10.1109/ASE56229.2023.00072",
+      "arxiv": "2309.06771",
+      "url": "https://doi.org/10.1109/ASE56229.2023.00072",
+      "source": "dblp",
+      "month": "September",
+      "topics": [
+        "Program Repair",
+        "Program Analysis"
+      ],
+      "selected": true
+    },
+    {
+      "id": "journals/tse/ChenWHXZZX21",
+      "title": "Coverage Prediction for Accelerating Compiler Testing",
+      "authors": [
+        {
+          "name": "Junjie Chen",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Dan Hao",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yingfei Xiong",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Hongyu Zhang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lu Zhang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Bing Xie",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2021,
+      "type": "journal",
+      "venue": "IEEE Transactions on Software Engineering",
+      "venue_short": "TSE",
+      "volume": "47",
+      "number": "2",
+      "pages": "261-278",
+      "doi": "10.1109/TSE.2018.2889771",
+      "arxiv": null,
+      "url": "https://doi.org/10.1109/TSE.2018.2889771",
+      "source": "dblp",
+      "topics": [
+        "Compiler Testing",
+        "Machine Learning"
+      ],
+      "selected": false
+    },
+    {
+      "id": "conf/sigsoft/WangS00021",
+      "title": "Probabilistic Delta Debugging",
+      "authors": [
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": true
+        },
+        {
+          "name": "Ruobing Shen",
+          "is_me": false,
+          "equal": true
+        },
+        {
+          "name": "Junjie Chen",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yingfei Xiong",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lu Zhang",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2021,
+      "type": "conference",
+      "venue": "ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering",
+      "venue_short": "ESEC/FSE",
+      "volume": null,
+      "number": null,
+      "pages": "881-892",
+      "doi": "10.1145/3468264.3468625",
+      "arxiv": null,
+      "url": "https://doi.org/10.1145/3468264.3468625",
+      "source": "dblp",
+      "month": "August",
+      "award": "ACM SIGSOFT Distinguished Paper Award",
+      "equal_contrib": [
+        "Guancheng Wang",
+        "Ruobing Shen"
+      ],
+      "topics": [
+        "Debugging",
+        "Program Reduction"
+      ],
+      "links": {
+        "code": "https://github.com/Amocy-Wang/ProbDD"
+      },
+      "selected": true
+    },
+    {
+      "id": "conf/kbse/0003WHX0019",
+      "title": "History-Guided Configuration Diversification for Compiler Test-Program Generation",
+      "authors": [
+        {
+          "name": "Junjie Chen",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Dan Hao",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Yingfei Xiong",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Hongyu Zhang",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lu Zhang",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2019,
+      "type": "conference",
+      "venue": "34th IEEE/ACM International Conference on Automated Software Engineering",
+      "venue_short": "ASE",
+      "volume": null,
+      "number": null,
+      "pages": "305-316",
+      "doi": "10.1109/ASE.2019.00037",
+      "arxiv": null,
+      "url": "https://doi.org/10.1109/ASE.2019.00037",
+      "source": "dblp",
+      "month": "November",
+      "award": "ACM SIGSOFT Distinguished Paper Award",
+      "topics": [
+        "Compiler Testing"
+      ],
+      "selected": true
+    },
+    {
+      "title": "Partial Evaluator for peC and Its Application to Compiler Validation",
+      "authors": [
+        {
+          "name": "Degui Guo",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Shuai Lv",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lei Liu",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2016,
+      "month": "December",
+      "type": "journal",
+      "venue": "Journal of Software (软件学报)",
+      "venue_short": "JOS",
+      "note": "in Chinese",
+      "language": "zh",
+      "topics": [
+        "Compiler Testing",
+        "Program Analysis"
+      ],
+      "id": "extra/partialevaluatorforpecanditsapplicationt",
+      "source": "manual",
+      "selected": false
+    }
+  ]
+}
