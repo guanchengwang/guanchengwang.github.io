@@ -1,85 +1,238 @@
 # Guancheng Wang — academic homepage
 
-A static, dependency-free personal site whose publication list **rebuilds itself
-every night** from DBLP, so it stops going stale.
+A static, dependency-free personal site whose **publication list and news
+rebuild themselves nightly** from DBLP, so it cannot go stale the way a
+hand-edited page does.
 
-- **Live site:** https://guanchengwang.github.io *(after the setup below)*
-- **Stack:** hand-written HTML/CSS/JS + one Python script. No Jekyll, no npm, no build step.
+No Jekyll, no npm, no build step, no third-party requests. Hand-written
+HTML/CSS/JS plus three Python scripts.
 
 ---
 
-## How the auto-updating works
+## Contents
 
+- [The 30-second version](#the-30-second-version)
+- [Everyday maintenance](#everyday-maintenance) ← the part you will actually use
+- [Where everything lives](#where-everything-lives)
+- [How the automation works](#how-the-automation-works)
+- [Reference: the data files](#reference-the-data-files)
+- [Design and privacy decisions](#design-and-privacy-decisions)
+- [First-time deployment](#first-time-deployment)
+- [Changing the site address](#changing-the-site-address)
+- [Troubleshooting](#troubleshooting)
+
+---
+
+## The 30-second version
+
+```bash
+make          # rebuild everything from data/
+make papers   # list papers, pick which appear on the homepage
+make serve    # preview at http://localhost:8000
+make check    # verify before pushing
 ```
-                                              ┌─►  data/publications.json
-DBLP  ──►  scripts/update_publications.py  ───┼─►  data/publications.bib
-                        ▲                     ├─►  index.html         (6 selected)
-                        │                     └─►  publications.html  (full list)
-             data/overrides.yaml
+
+Edit a file in `data/`, run `make`, commit, push. That is the whole workflow.
+
+```bash
+make && git commit -am "update" && git push
 ```
 
-Every night a GitHub Action runs the script, and commits only if something
-actually changed. Both lists are written into the pages as **real HTML**, not
-fetched by JavaScript at page load — so they stay indexable by search engines
-and Google Scholar, and work with JS disabled.
+---
 
-**Sources, and why:**
+## Everyday maintenance
 
-| Source | Used for | Failure behaviour |
+**Normally you do nothing.** A GitHub Action runs at 04:17 UTC daily: it pulls
+DBLP, regenerates both publication lists, derives any news the change implies,
+and redeploys. It commits **only when something actually changed**, so a quiet
+month produces no commits.
+
+Three things the automation cannot know:
+
+| When | What you do | Effort |
 | --- | --- | --- |
-| [DBLP](https://dblp.org/pid/196/5011-1) | The publication record itself | Falls back to the last committed `publications.json` |
-| `data/overrides.yaml` | Everything DBLP gets wrong or lacks | — |
+| A paper is accepted | Add a `patch` entry in `data/overrides.yaml` promoting it from arXiv to the real venue | ~1 min |
+| You want it on the homepage | Add a fragment under `selected:` | ~15 s |
+| Non-paper news — PC, award, talk, move | Add an item to `data/news.yaml` | ~30 s |
+| You travelled somewhere | Add an entry to `data/places.yaml` | ~20 s |
 
-Citation counts, h-index and i10-index are deliberately **not** collected or
-shown. That is a display choice, and it also removes the build's only fragile
-dependency: Google Scholar has no API and blocks CI IP ranges.
+### A paper got accepted
 
----
-
-## The file you will actually edit: `data/overrides.yaml`
-
-DBLP lags acceptances, drops subtitles, ignores Chinese-language venues, and
-knows nothing about awards or artifact links. Everything in `overrides.yaml`
-wins over DBLP.
-
-**A paper was just accepted** (DBLP still shows only the arXiv preprint) — add a
-`patch` entry to promote it:
+DBLP will still be showing only the arXiv preprint. Tell it the real venue:
 
 ```yaml
 patch:
-  - match: "Your Paper Title As It Appears On arXiv"
+  - match: "Call-Chain-Aware LLM-Based Test Generation"   # a fragment is fine
     type: conference          # or journal
     venue: "48th International Conference on Software Engineering"
-    venue_short: "ICSE"
+    venue_short: "ICSE"       # what shows in the left rail
     year: 2027
     month: "May"
     award: "ACM SIGSOFT Distinguished Paper Award"   # optional
     topics: ["LLM4SE", "Test Generation"]
 ```
 
-**Choosing what appears on the homepage** — the homepage shows a short list,
-everything else lives on `publications.html`. Edit `selected:` at the top of
-`overrides.yaml`:
+Run `make`. The news item — *"… is accepted at **ICSE**."* — writes itself.
 
-```yaml
-selected:
-  - "Exact Title Of A Paper To Feature"
+When DBLP later indexes the published version properly, the patch keeps
+agreeing with it and the arXiv preprint is folded in automatically.
+
+### Choosing the homepage papers
+
+```bash
+make papers
 ```
 
-Titles are matched *after* any `title:` correction below, and a title that
-matches nothing prints a warning when the script runs. Empty the list and the
-homepage falls back to the six most recent peer-reviewed papers.
+```
+ ★ 2026  TSE        "Mutation-Guided Unit"
+   2026  arXiv      "BeSpec: Behavior-Level"
+```
 
-**A paper DBLP will never index** (Chinese journals, some workshops) — add it
-under `extra:` with the full author list.
+★ marks what is currently featured. Copy a quoted fragment into `selected:` in
+`data/overrides.yaml`. **A distinctive fragment is enough** — you never need to
+paste a full title or keep it in sync when a venue renames the paper. An exact
+title beats a partial one, and a fragment matching nothing (or two papers) is
+reported when you build.
 
-**Marking equal contribution** — authors listed here get a `#`:
+To filter, call the script directly — `make` would read the word as a target:
+
+```bash
+python3 scripts/papers.py llm
+```
+
+### News
+
+**You should not need to write paper news by hand again.** The build diffs the
+publication record against the previous run and writes items itself:
+
+| Change | Item written |
+| --- | --- |
+| DBLP indexes a new preprint | *"New preprint: …"* |
+| DBLP indexes a new paper | *"… appears in **TSE**."* |
+| A preprint of yours becomes accepted | *"… is accepted at **ICSE**."* |
+
+These accumulate in `data/news-auto.json` — a generated file, do not edit it.
+
+`data/news.yaml` is for everything a publication record cannot see:
 
 ```yaml
+items:
+  - date: 2027-03                    # "YYYY-MM" or just "YYYY"
+    text: "Giving a talk at **Some Workshop** on trustworthy test generation."
+```
+
+`**bold**` and `*italic*` work. Items sort by date automatically, so append
+anywhere. `settings.max_items` caps how many show. To suppress an auto-written
+item, put a fragment of its text under `hide:`.
+
+### Before pushing
+
+```bash
+make check
+```
+
+Three assertions:
+
+1. the build is **reproducible** — running twice gives identical output;
+2. **no email address** appears in any served HTML;
+3. **no third-party request** has crept in.
+
+Worth running after any edit to the templates or scripts.
+
+---
+
+## Where everything lives
+
+```
+data/            ← you edit these
+  overrides.yaml     publication corrections, selected papers, artifact links
+  news.yaml          hand-written news
+  places.yaml        travel map
+  publications.json  GENERATED — the merged record
+  news-auto.json     GENERATED — auto-derived news
+  publications.bib   GENERATED — BibTeX for the whole record
+  world-paths.svg    GENERATED — cached country outlines
+
+scripts/
+  update_publications.py   DBLP → publications + news → both pages
+  build_worldmap.py        places.yaml → the map
+  papers.py                `make papers`
+  set_site_url.py          repoint canonical / og:url / JSON-LD
+
+index.html         homepage — prose is edited here directly
+publications.html  full list — generated content only
+404.html
+assets/            css, js, self-hosted fonts, avatar
+```
+
+Generated blocks in the HTML sit between markers such as
+`<!-- PUBLICATIONS:START -->`. **Anything between a START/END pair is
+overwritten on every build** — edit the data file instead.
+
+Prose lives directly in `index.html`:
+
+| Want to change | Where |
+| --- | --- |
+| Bio, name, affiliation, pronunciation | `<section class="hero">` |
+| Research themes | `<div class="cards">` |
+| Awards | `<div class="awards">` |
+| Service, teaching | `<div class="timeline">` |
+| Contact text | `<section id="contact">` |
+| Colours, fonts, spacing | `assets/css/style.css` — variables at the top |
+
+**Your photo:** drop a square image at `assets/img/avatar.jpg`. It replaces the
+`GW` monogram automatically; if the file is missing the monogram simply stays.
+
+---
+
+## How the automation works
+
+```
+                                       ┌─►  data/publications.json
+DBLP  ──►  update_publications.py  ────┼─►  data/publications.bib
+                    ▲                  ├─►  data/news-auto.json
+                    │                  ├─►  index.html         (6 selected + news)
+      overrides.yaml + news.yaml       └─►  publications.html  (full list)
+```
+
+Both lists are written into the pages as **real HTML**, not fetched by
+JavaScript at load. They stay indexable by search engines and Google Scholar,
+and work with JavaScript disabled.
+
+**DBLP is the only network source.** Citation counts, h-index and i10-index are
+deliberately not collected or displayed — a display choice that also removes
+the build's one fragile dependency, since Google Scholar has no API and blocks
+CI address ranges.
+
+If DBLP is unreachable the build falls back to the last committed
+`publications.json`, so the site never empties out.
+
+---
+
+## Reference: the data files
+
+### `data/overrides.yaml`
+
+Everything here wins over DBLP.
+
+| Key | Purpose |
+| --- | --- |
+| `selected:` | Which papers appear on the homepage (fragments) |
+| `patch:` | Correct or promote an entry DBLP already has |
+| `extra:` | Papers DBLP will never index — Chinese venues, some workshops |
+| `merge:` | Collapse a preprint into its published version when retitled |
+| `links:` | Per-paper code / slides / PDF / video links |
+| `hide:` | Drop an entry entirely |
+
+Equal contribution, giving authors a `#`:
+
+```yaml
+patch:
+  - match: "Probabilistic Delta Debugging"
     equal_contrib: ["Guancheng Wang", "Ruobing Shen"]
 ```
 
-**Adding code / slides / PDF links** — keyed by title:
+Artifact links, keyed by title:
 
 ```yaml
 links:
@@ -88,208 +241,153 @@ links:
     slides: "https://…"
 ```
 
-After editing, preview locally:
+> Do not advertise a replication package for a paper that has not been
+> accepted. The CAT entry is commented out for exactly this reason — uncomment
+> it when the paper lands.
 
-```bash
-python3 scripts/update_publications.py
+### `data/places.yaml`
+
+```yaml
+- { name: "Kyoto", country: "Japan", lat: 35.0116, lon: 135.7681 }
 ```
 
-Then open `index.html` and `publications.html` in a browser. Commit and push
-when it looks right.
+Decimal degrees; copying the pair off any map site is accurate enough at this
+size. `category: work` marks the current work location — accent colour, larger
+pin, always labelled. Everything else defaults to `visited`.
+
+Country outlines come from Natural Earth (public domain), cached in
+`data/world-paths.svg`, so rebuilds are offline. To regenerate them, delete
+that file and run `make map`.
+
+### `data/news.yaml`
+
+See [News](#news) above. `settings.auto_from_publications: false` turns off
+auto-derived items entirely.
 
 ---
 
-## Editing everything else
+## Design and privacy decisions
 
-All the prose lives directly in the HTML, in clearly-marked sections:
+Restrained editorial: one ink-blue accent used almost exclusively for links,
+serif headings over a sans body, hairline rules, no gradients or ambient
+effects. Gold is reserved for the two Distinguished Paper awards. Changing
+`--accent` in `style.css` moves everything with it.
 
-| Want to change | Where |
-| --- | --- |
-| Bio, name, affiliation | `index.html` → `<section class="hero">` |
-| Research interests (sidebar) | `index.html` → `<div class="sidecard">` |
-| News items | `<ul class="news">` — copy an `<li>`, newest first |
-| Research themes | `<div class="cards">` |
-| Awards | `<div class="awards">` |
-| Service / teaching | `<div class="timeline">` |
-| Colours, fonts, spacing | `assets/css/style.css` (CSS variables at the top) |
-| Selected papers on homepage | `data/overrides.yaml` → `selected:` |
+Three deliberate privacy choices, each of which a conventional implementation
+would have got wrong:
 
-The design is deliberately restrained: one ink-blue accent used almost only for
-links, serif headings, hairline rules, no gradients or ambient effects. Gold is
-reserved for the two Distinguished Paper awards. If you change `--accent` in
-`style.css`, everything follows.
-
-### Privacy choices baked in
-
-- **Your email is never in the served HTML.** It is stored as reversed base64
-  in a single `data-e` attribute and decoded in the browser. No fragment — not
-  the local part, not the domain, not an `[at]` spelling — appears in the page
-  source, so there is nothing for a harvester to reassemble. Splitting it into
-  adjacent `user` / `domain` attributes, the common trick, is *not* enough: a
-  one-line regex rejoins them.
+- **The email address never appears in the served HTML.** It is stored as
+  reversed base64 in one `data-e` attribute and decoded only when a visitor
+  clicks *Show email address*. There is no `mailto:` link anywhere — a
+  `mailto:` is a one-click target for automated mail and has to put the address
+  in the DOM to work at all. Splitting it across adjacent `user`/`domain`
+  attributes, the usual trick, is **not** enough: a one-line regex rejoins them.
 
   To change the address, regenerate the token and paste it into both `.js-mail`
-  links in `index.html`:
+  elements in `index.html`:
 
   ```bash
   python3 -c "import base64;print(base64.b64encode(b'you@example.com').decode()[::-1])"
   ```
-- **Fonts are self-hosted** in `assets/fonts/`, so the site makes zero
-  third-party requests. Embedding Google Fonts directly would send every
-  visitor's IP to Google, which EU courts have found to breach GDPR.
 
-### The travel map
+  This stops bulk harvesters, which do not run JavaScript. A scraper
+  deliberately targeting you and simulating a click still wins — no
+  client-side scheme can prevent that, since the browser needs the address to
+  make the link work.
 
-The `Places` section is an inline SVG world map — no tiles, no Google Maps
-embed, so it makes no third-party request and leaks no visitor IPs. Add a place
-to `data/places.yaml` and rebuild:
+- **Fonts are self-hosted** in `assets/fonts/`. Embedding Google Fonts sends
+  every visitor's IP to Google, which EU courts have found to breach GDPR.
 
-```bash
-python3 scripts/build_worldmap.py
-```
+- **The travel map is inline SVG**, not map tiles. A Leaflet/OSM or Google Maps
+  embed would send every visitor's IP and approximate location to the tile host.
 
-Coordinates are plain decimal degrees; copying the pair from any map site is
-accurate enough at this size. `category` picks the marker colour and controls
-the legend, which only lists categories actually in use. Country outlines come
-from Natural Earth (public domain) and are cached in `data/world-paths.svg`, so
-the rebuild is offline after the first run.
-
-**Your photo:** drop a square image at `assets/img/avatar.jpg`. It replaces the
-`GW` monogram automatically; if the file is missing the monogram just stays.
+`make check` enforces the first and second of these.
 
 ---
 
 ## First-time deployment
 
-1. **Rename your GitHub account** to `guanchengwang`
-   (Settings → Account → Change username). This is what makes the URL
-   `guanchengwang.github.io` rather than `amocy-wang.github.io` — GitHub ties
-   user-site URLs to the account name, not the repo name. GitHub redirects your
-   old repo links automatically.
+> **Decide the URL first.** GitHub ties a user-site address to the *account*
+> name, not the repo name — `guanchengwang.github.io` requires the account
+> itself to be `guanchengwang`. Renaming later means redoing steps 2–4.
 
-2. **Create a repository named exactly `guanchengwang.github.io`.**
+1. **Rename the GitHub account** to `guanchengwang`
+   (Settings → Account → Change username). GitHub redirects old repo links
+   automatically. *Skip if you are keeping `Amocy-Wang`, and run
+   `python3 scripts/set_site_url.py https://amocy-wang.github.io` instead.*
 
-3. **Push this directory:**
+2. **Create a repository named exactly `<account>.github.io`**, empty — no
+   README, no .gitignore, no licence.
+
+3. **Push:**
 
    ```bash
-   git remote add origin https://github.com/guanchengwang/guanchengwang.github.io.git
-   git add -A && git commit -m "feat: new academic homepage"
+   git remote add origin git@github.com:guanchengwang/guanchengwang.github.io.git
    git push -u origin main
    ```
 
-4. **Turn on Pages:** repo → Settings → Pages → *Source: **GitHub Actions***.
-   (Not "Deploy from a branch" — the workflows here use the Actions path.)
+4. **Settings → Pages → Source: GitHub Actions.**
+   Not "Deploy from a branch" — the workflows here use the Actions path.
 
-5. **Allow the Action to commit:** Settings → Actions → General → Workflow
-   permissions → **Read and write permissions**. Without this the nightly
-   refresh can fetch but not commit.
+5. **Settings → Actions → General → Workflow permissions → Read and write.**
+   Without this the nightly refresh can fetch but cannot commit.
 
-6. Trigger the first run: Actions tab → *Refresh publications* → **Run workflow**.
+6. **Actions → *Refresh publications* → Run workflow** to trigger the first
+   build rather than waiting for 04:17 UTC.
 
----
-
-## Using a custom domain
-
-`gcwang.dev` was unregistered as of the last check and is the shortest sensible
-option. Once you own a domain:
-
-1. Create a file named `CNAME` in this directory containing only the domain:
-
-   ```
-   gcwang.dev
-   ```
-
-2. At your registrar, add these DNS records:
-
-   | Type | Name | Value |
-   | --- | --- | --- |
-   | A | `@` | `185.199.108.153` |
-   | A | `@` | `185.199.109.153` |
-   | A | `@` | `185.199.110.153` |
-   | A | `@` | `185.199.111.153` |
-   | CNAME | `www` | `guanchengwang.github.io.` |
-
-3. Repo → Settings → Pages → Custom domain → enter it → tick **Enforce HTTPS**.
-
-4. Update the three absolute URLs in `index.html` (`<link rel="canonical">`,
-   `og:url`, and `url` in the JSON-LD block).
+The site is live a minute or two later. Check the Actions tab if it is not.
 
 ---
 
-## Maintenance: what you actually have to do
+## Changing the site address
 
-**Normally: nothing.** A GitHub Action runs at 04:17 UTC daily, pulls DBLP,
-regenerates both publication lists, writes any news the change implies, and
-redeploys. It commits only when something really changed, so a quiet week
-produces no commits at all.
+Three absolute URLs must agree with where the site actually lives — the
+canonical link, `og:url`, and `url` in the JSON-LD block — or search results
+and link previews point at the wrong place. One command does all of them on
+every page:
 
-Three things it cannot know, and how long each takes:
+```bash
+python3 scripts/set_site_url.py https://gcwang.dev
+```
 
-| When | What you do | Effort |
+For a custom domain it also writes the `CNAME` file. Then at your registrar:
+
+| Type | Name | Value |
 | --- | --- | --- |
-| A paper is accepted | Add a `patch` entry in `data/overrides.yaml` promoting it from arXiv to the real venue | ~1 min |
-| You want it featured | Add a fragment under `selected:` | ~15 s |
-| Non-paper news (PC, award, talk, move) | Add an item to `data/news.yaml` | ~30 s |
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| CNAME | `www` | `<account>.github.io.` |
 
-Then:
+Then repo → Settings → Pages → Custom domain → enter it → tick
+**Enforce HTTPS**. DNS can take an hour or so to propagate.
 
-```bash
-make && git commit -am "update" && git push
-```
+`gcwang.dev`, `gcwang.io` and `gcwang.me` were all unregistered as of
+August 2026.
 
-`make` rebuilds everything; pushing triggers the deploy.
+---
 
-### Choosing the homepage papers
+## Troubleshooting
 
-```bash
-make papers
-```
+| Symptom | Cause and fix |
+| --- | --- |
+| A paper is missing | DBLP has not indexed it. Add it under `extra:`; when DBLP catches up the duplicate is merged away automatically. |
+| A preprint and paper both listed | Add the pair under `merge:` in `overrides.yaml`. |
+| A `selected:` fragment did nothing | The build prints a warning. Run `make papers` for a fragment that works. |
+| Nightly Action fails to push | Settings → Actions → General → Workflow permissions → **Read and write**. |
+| Site not updating | Actions tab → check the last run. Pages source must be **GitHub Actions**. |
+| `make check` says not reproducible | Something in the build depends on the clock or on ordering. The last-updated stamp is deliberately frozen unless the record changed; check anything you added since. |
+| Wrong URL in Google results | `python3 scripts/set_site_url.py <the right one>`, rebuild, push. |
+| Map markers in the wrong place | Latitude and longitude are the other way round in `places.yaml`. |
 
-Prints every paper with a ★ against the ones currently featured and a
-ready-made fragment for each. Copy a quoted string into `selected:` in
-`data/overrides.yaml` — a distinctive fragment is enough, no exact titles to
-keep in sync. Fragments that match nothing, or match two papers, are reported
-when you build.
-
-### News
-
-You should not need to write paper news by hand again. When DBLP first indexes
-a paper, or when one of your preprints becomes an accepted paper, the build
-writes the item for you into `data/news-auto.json`:
-
-- new paper → *"New preprint: …"* or *"… appears in **TSE**."*
-- preprint accepted → *"… is accepted at **ICSE**."*
-
-`data/news.yaml` is for what a publication record cannot see — PC invitations,
-awards, talks, moves. `**bold**` and `*italic*` work. Items sort by date
-automatically, `max_items` controls how many show, and anything auto-generated
-that you dislike can be dropped by putting a fragment of it under `hide:`.
-
-### Before pushing
+### Rebuilding from scratch
 
 ```bash
-make check
+rm data/world-paths.svg      # re-fetch and re-project country outlines
+make
 ```
 
-Confirms the build is reproducible, that no email address leaked into the HTML,
-and that no third-party request crept in. Worth running after any edit to the
-templates.
-
-### If something looks wrong
-
-- **A paper is missing** — DBLP has not indexed it yet. Add it under `extra:`
-  in `overrides.yaml`; when DBLP catches up, the duplicate is merged away.
-- **A duplicate preprint and paper** — add the pair under `merge:`.
-- **The Action fails to push** — Settings → Actions → General → Workflow
-  permissions must be **Read and write**.
-- **DBLP is down** — the build falls back to the last committed
-  `publications.json`, so the site never empties out.
-
-
-## Local preview
-
-```bash
-make serve
-```
-
-Rebuilds and serves at http://localhost:8000.
+`data/publications.json` is safe to delete too — it is refetched from DBLP —
+but it doubles as the offline fallback and as the baseline for auto-news, so
+deleting it means the next run derives no news items.
