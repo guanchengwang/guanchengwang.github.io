@@ -182,5 +182,8 @@ links:
     code: "https://github.com/Amocy-Wang/T-PDD"
   "Mutation-Guided Unit Test Generation With a Large Language Model":
     code: "https://github.com/Amocy-Wang/MUTGEN"
-  "Call-Chain-Aware LLM-Based Test Generation for Java Projects":
-    code: "https://github.com/Amocy-Wang/CAT"
+
+  # Call-Chain-Aware (CAT) is still under review, so its artifact stays
+  # unadvertised. Uncomment once the paper is accepted.
+  # "Call-Chain-Aware LLM-Based Test Generation for Java Projects":
+  #   code: "https://github.com/Amocy-Wang/CAT"
