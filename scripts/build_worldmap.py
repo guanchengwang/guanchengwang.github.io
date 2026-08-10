@@ -144,29 +144,45 @@ def build_world_paths(min_area: float = 1.5) -> str:
 
 
 def render_markers(places: list[dict]) -> tuple[str, str]:
-    """Returns (svg markers, html list)."""
-    dots, items = [], []
+    """Returns (svg markers, html list grouped by country).
+
+    Once the list runs past a dozen entries, one row per place is unreadable.
+    Grouping by country and running the names inline keeps it scannable at any
+    length, and each name still cross-highlights with its pin."""
+    dots = []
+    groups: dict[str, list[str]] = {}      # insertion-ordered by first use
+
     for i, p in enumerate(places):
         x, y = robinson(float(p["lon"]), float(p["lat"]))
         cat = p.get("category", "visited")
         name = p["name"]
         note = p.get("note", "")
-        label = f"{name}{' — ' + note if note else ''}"
+        country = p.get("country", "")
+        label = ", ".join(filter(None, [name, country]))
+        if note:
+            label += f" — {note}"
 
         dots.append(
             f'      <g class="map__pin map__pin--{cat}" data-place="{i}" '
             f'transform="translate({x:.1f} {y:.1f})" tabindex="0" role="img" '
             f'aria-label="{label}">\n'
-            f'        <circle class="map__halo" r="9"/>\n'
-            f'        <circle class="map__dot" r="4"/>\n'
+            f'        <circle class="map__halo" r="8"/>\n'
+            f'        <circle class="map__dot" r="3.2"/>\n'
             f'        <title>{label}</title>\n'
             f'      </g>'
         )
+        groups.setdefault(country, []).append(
+            f'<span class="place place--{cat}" data-place="{i}"'
+            + (f' title="{note}"' if note else "")
+            + f'>{name}</span>'
+        )
+
+    items = []
+    for country, names in groups.items():
         items.append(
-            f'        <li class="place place--{cat}" data-place="{i}">'
-            f'<span class="place__name">{name}</span>'
-            + (f'<span class="place__note">{note}</span>' if note else "")
-            + '</li>'
+            f'        <li class="places__group">'
+            f'<span class="places__country">{country}</span>'
+            f'<span class="places__names">{", ".join(names)}</span></li>'
         )
     return "\n".join(dots), "\n".join(items)
 
@@ -198,11 +214,15 @@ def main() -> int:
         for key, meta in (cfg.get("categories") or {}).items() if key in used
     )
 
+    countries = len({p.get("country", "") for p in places})
+    summary = (f'<p class="map__count">{len(places)} places across '
+               f'{countries} countries</p>')
+
     svg = (f'      <svg class="map__svg" viewBox="0 0 {WIDTH:.0f} {HEIGHT:.0f}" '
            f'role="group" aria-label="World map of places visited" '
            f'xmlns="http://www.w3.org/2000/svg">\n'
            f'        {land}\n{dots}\n      </svg>\n'
-           f'      <p class="map__legend">{legend}</p>\n'
+           f'      <p class="map__legend">{legend}{summary}</p>\n'
            f'      <ul class="places">\n{items}\n      </ul>')
 
     page = INDEX_HTML.read_text()

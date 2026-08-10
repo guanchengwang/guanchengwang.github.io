@@ -3,67 +3,78 @@
 # ---------------------------------------------------------------------------
 # Add a place, run `python3 scripts/build_worldmap.py`, and the map redraws.
 # Coordinates are plain decimal degrees: positive lat = north, positive lon =
-# east. Looking a city up on any map site and copying the pair is enough —
-# the map is small, so a few kilometres of error is invisible.
+# east. Copying the pair from any map site is accurate enough — at this size a
+# few kilometres of error is invisible.
 #
-# `category` must match a key under `categories:` below; it sets the marker
-# colour and the legend.
+# `category` is either `work` (highlighted, pulsing) or `visited`. Only the
+# current work location is singled out.
+#
+# `country` groups the list under the map. Countries appear in the order they
+# are first used below, so reorder these entries to reorder the list.
 # ---------------------------------------------------------------------------
 
 categories:
-  home:       { label: "Lived &amp; worked" }
-  conference: { label: "Conferences &amp; talks" }
-  visited:    { label: "Visited" }
+  work:    { label: "Lived &amp; worked" }
+  visited: { label: "Visited" }
 
 places:
-  # --- Confirmed ----------------------------------------------------------
-  - name: "Limerick, Ireland"
-    lat: 52.6638
-    lon: -8.6267
-    category: home
-    note: "Lero, University of Limerick — current"
+  # --- Ireland ------------------------------------------------------------
+  - { name: "Limerick", country: "Ireland", lat: 52.6638, lon: -8.6267,
+      category: work, note: "Lero, University of Limerick" }
+  - { name: "Dublin",  country: "Ireland", lat: 53.3498, lon: -6.2603 }
+  - { name: "Cork",    country: "Ireland", lat: 51.8985, lon: -8.4756 }
+  - { name: "Galway",  country: "Ireland", lat: 53.2707, lon: -9.0568 }
 
-  - name: "Beijing, China"
-    lat: 39.9042
-    lon: 116.4074
-    category: home
-    note: "Peking University — Ph.D."
+  # --- China --------------------------------------------------------------
+  - { name: "Beijing",   country: "China", lat: 39.9042, lon: 116.4074,
+      note: "Peking University" }
+  - { name: "Shanghai",  country: "China", lat: 31.2304, lon: 121.4737 }
+  - { name: "Hangzhou",  country: "China", lat: 30.2741, lon: 120.1551 }
+  - { name: "Nanjing",   country: "China", lat: 32.0603, lon: 118.7969 }
+  - { name: "Suzhou",    country: "China", lat: 31.2989, lon: 120.5853 }
+  - { name: "Xiamen",    country: "China", lat: 24.4798, lon: 118.0894 }
+  - { name: "Chengdu",   country: "China", lat: 30.5728, lon: 104.0668 }
+  - { name: "Chongqing", country: "China", lat: 29.5630, lon: 106.5516 }
+  - { name: "Wuhan",     country: "China", lat: 30.5928, lon: 114.3055 }
+  - { name: "Changsha",  country: "China", lat: 28.2282, lon: 112.9388 }
+  - { name: "Yichang",   country: "China", lat: 30.6919, lon: 111.2865 }
+  - { name: "Jiujiang",  country: "China", lat: 29.7050, lon: 116.0019 }
+  - { name: "Changchun", country: "China", lat: 43.8171, lon: 125.3235 }
+  - { name: "Harbin",    country: "China", lat: 45.8038, lon: 126.5350 }
+  - { name: "Shenyang",  country: "China", lat: 41.8057, lon: 123.4315 }
+  # 延吉 is the seat of 延边 prefecture, so the two share one marker.
+  - { name: "Yanji",     country: "China", lat: 42.9048, lon: 129.5091,
+      note: "Yanbian" }
+  - { name: "Hong Kong", country: "China", lat: 22.3193, lon: 114.1694 }
+  - { name: "Macau",     country: "China", lat: 22.1987, lon: 113.5439 }
 
-  # --- Uncomment the ones you actually attended ---------------------------
-  # Coordinates are filled in already; delete the ones that do not apply.
-  #
-  # - name: "San Diego, USA"
-  #   lat: 32.7157
-  #   lon: -117.1611
-  #   category: conference
-  #   note: "ASE 2019"
-  #
-  # - name: "Beijing, China"
-  #   lat: 39.9042
-  #   lon: 116.4074
-  #   category: conference
-  #   note: "ISSTA 2019 — student volunteer"
-  #
-  # - name: "Athens, Greece"
-  #   lat: 37.9838
-  #   lon: 23.7275
-  #   category: conference
-  #   note: "ESEC/FSE 2021"
-  #
-  # - name: "Florence, Italy"
-  #   lat: 43.7696
-  #   lon: 11.2558
-  #   category: conference
-  #   note: "ISSRE 2023"
-  #
-  # - name: "Luxembourg"
-  #   lat: 49.6116
-  #   lon: 6.1319
-  #   category: conference
-  #   note: "ASE 2023"
-  #
-  # - name: "Seoul, South Korea"
-  #   lat: 37.5665
-  #   lon: 126.9780
-  #   category: conference
-  #   note: "ICML 2026"
+  # --- United States ------------------------------------------------------
+  - { name: "New York",      country: "United States", lat: 40.7128, lon: -74.0060 }
+  - { name: "Boston",        country: "United States", lat: 42.3601, lon: -71.0589 }
+  - { name: "Philadelphia",  country: "United States", lat: 39.9526, lon: -75.1652 }
+  - { name: "San Francisco", country: "United States", lat: 37.7749, lon: -122.4194 }
+  - { name: "Los Angeles",   country: "United States", lat: 34.0522, lon: -118.2437 }
+  - { name: "San Diego",     country: "United States", lat: 32.7157, lon: -117.1611 }
+
+  # --- Iceland ------------------------------------------------------------
+  - { name: "Reykjavík",   country: "Iceland", lat: 64.1466, lon: -21.9426 }
+  - { name: "Selfoss",     country: "Iceland", lat: 63.9330, lon: -20.9970 }
+  - { name: "Vík",         country: "Iceland", lat: 63.4186, lon: -19.0060 }
+  - { name: "Skaftafell",  country: "Iceland", lat: 64.0164, lon: -16.9666 }
+
+  # --- Canada -------------------------------------------------------------
+  - { name: "Ottawa",   country: "Canada", lat: 45.4215, lon: -75.6972 }
+  - { name: "Montréal", country: "Canada", lat: 45.5017, lon: -73.5673 }
+
+  # --- Norway -------------------------------------------------------------
+  - { name: "Oslo",       country: "Norway", lat: 59.9139, lon: 10.7522 }
+  - { name: "Trondheim",  country: "Norway", lat: 63.4305, lon: 10.3951 }
+
+  # --- Elsewhere in Europe ------------------------------------------------
+  - { name: "London",    country: "United Kingdom", lat: 51.5074, lon: -0.1278 }
+  - { name: "Florence",  country: "Italy",          lat: 43.7696, lon: 11.2558 }
+  - { name: "Frankfurt", country: "Germany",        lat: 50.1109, lon: 8.6821 }
+  - { name: "Tallinn",   country: "Estonia",        lat: 59.4370, lon: 24.7536 }
+
+  # --- Japan --------------------------------------------------------------
+  - { name: "Tokyo", country: "Japan", lat: 35.6762, lon: 139.6503 }
