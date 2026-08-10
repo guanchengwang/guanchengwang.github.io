@@ -26,9 +26,9 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
 
@@ -56,8 +56,12 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v6
+      # upload-pages-artifact v5 excludes hidden files by default, unlike v3.
+      # That is what we want here: it keeps .git and .github out of the
+      # artifact, and .nojekyll is unnecessary because an Actions-based deploy
+      # never runs Jekyll in the first place.
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: .
 
@@ -69,4 +73,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
