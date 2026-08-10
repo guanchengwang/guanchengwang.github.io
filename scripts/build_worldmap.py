@@ -176,8 +176,7 @@ def render_markers(places: list[dict]) -> tuple[str, str]:
             f'        <circle class="map__halo" r="8"/>\n'
             + ('        <circle class="map__ring" r="6"/>\n' if cat == "work" else "")
             + f'        <circle class="map__dot" r="3.2"/>\n'
-            + (f'        <text class="map__label" x="10" y="3.5">{name}</text>\n'
-               if cat == "work" else "")
+            + f'        <text class="map__label" x="9" y="3.5">{name}</text>\n'
             + f'        <title>{label}</title>\n'
             f'      </g>'
         )

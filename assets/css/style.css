@@ -525,13 +525,22 @@ html[data-theme="light"] .icon-moon { display: none; }
 .places-toggle[open] summary { margin-bottom: 1rem; }
 .places-toggle[open] summary::after { content: ' ×'; }
 
-/* Only the work location is labelled on the map itself — one label reads as
-   emphasis, forty-two would be a mess. */
+/* Place names. Hidden at world scale — forty-two labels would be a mess — and
+   revealed once zoomed in, subject to the collision test in main.js. The work
+   location is always labelled. */
 .map__label {
-  font-family: var(--mono); font-size: 11px; font-weight: 500;
-  fill: var(--accent); dominant-baseline: middle;
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  fill: var(--text-dim); dominant-baseline: middle; pointer-events: none;
   paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round;
+  opacity: 0; transition: opacity .2s;
 }
+.map__label.is-shown { opacity: 1; }
+.map__pin--work .map__label {
+  font-size: 11px; fill: var(--accent); opacity: 1;
+}
+.map__pin:hover .map__label,
+.map__pin:focus .map__label,
+.map__pin.is-active .map__label { opacity: 1; fill: var(--accent); }
 
 /* Pan and zoom, contained entirely within the map frame. */
 .map { position: relative; }

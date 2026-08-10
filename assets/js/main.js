@@ -279,7 +279,61 @@
           'translate(' + pin.dataset.x + ' ' + pin.dataset.y + ') scale(' + inv + ')');
       });
       if (resetBtn) resetBtn.disabled = view.w >= base.w - 0.01;
+      updateLabels();
     };
+
+    // Reveal place names once zoomed in far enough for them to be readable,
+    // and only where they do not collide. Labels counter-scale with the pins,
+    // so their size on screen is constant and the boxes can be measured in
+    // screen pixels — no getBBox needed, which keeps this cheap during a drag.
+    var LABEL_ZOOM = 2.2;
+    var CHAR_W = 6.1, PAD = 10, HALF_H = 7;
+
+    var labelOrder = Array.prototype.slice.call(mapPins).sort(function (a, b) {
+      // The work pin claims its space first; everything else in list order.
+      var aw = a.classList.contains('map__pin--work') ? 0 : 1;
+      var bw = b.classList.contains('map__pin--work') ? 0 : 1;
+      return aw - bw || (+a.dataset.place) - (+b.dataset.place);
+    });
+
+    function updateLabels() {
+      var rect = mapSvg.getBoundingClientRect();
+      if (!rect.width) return;
+      var zoomed = (base.w / view.w) >= LABEL_ZOOM;
+      var placed = [];
+
+      labelOrder.forEach(function (pin) {
+        var lbl = pin.querySelector('.map__label');
+        if (!lbl) return;
+        var isWork = pin.classList.contains('map__pin--work');
+
+        var sx = (pin.dataset.x - view.x) / view.w * rect.width;
+        var sy = (pin.dataset.y - view.y) / view.h * rect.height;
+        var offscreen = sx < -40 || sy < -40 ||
+                        sx > rect.width + 40 || sy > rect.height + 40;
+
+        if (offscreen || (!zoomed && !isWork)) {
+          lbl.classList.remove('is-shown');
+          return;
+        }
+
+        var box = {
+          l: sx + PAD - 2, t: sy - HALF_H,
+          r: sx + PAD + lbl.textContent.length * CHAR_W, b: sy + HALF_H
+        };
+        var clash = placed.some(function (o) {
+          return !(box.r < o.l || box.l > o.r || box.b < o.t || box.t > o.b);
+        });
+
+        // The work label is never suppressed; it reserves its box regardless.
+        if (clash && !isWork) {
+          lbl.classList.remove('is-shown');
+          return;
+        }
+        placed.push(box);
+        lbl.classList.add('is-shown');
+      });
+    }
 
     // Zoom about a fixed point, given in viewBox coordinates.
     var zoomAt = function (factor, cx, cy) {
