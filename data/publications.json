@@ -1,12 +1,54 @@
 {
-  "generated_at": "2026-08-10T15:36:33Z",
+  "generated_at": "2026-10-21T00:40:21Z",
   "counts": {
     "papers": 16,
-    "peer_reviewed": 10,
-    "preprints": 6,
-    "selected": 6
+    "peer_reviewed": 11,
+    "preprints": 5,
+    "selected": 7
   },
   "publications": [
+    {
+      "id": "journals/corr/abs-2607-02949",
+      "title": "BeSpec: Behavior-Level Specification Alignment for Code Generation",
+      "authors": [
+        {
+          "name": "Qinghua Xu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Guancheng Wang",
+          "is_me": true,
+          "equal": false
+        },
+        {
+          "name": "Boxi Yu",
+          "is_me": false,
+          "equal": false
+        },
+        {
+          "name": "Lionel C. Briand",
+          "is_me": false,
+          "equal": false
+        }
+      ],
+      "year": 2027,
+      "type": "conference",
+      "venue": "49th IEEE/ACM International Conference on Software Engineering",
+      "venue_short": "ICSE",
+      "volume": null,
+      "number": null,
+      "pages": null,
+      "doi": null,
+      "arxiv": "2607.02949",
+      "url": "https://doi.org/10.48550/arXiv.2607.02949",
+      "source": "dblp",
+      "topics": [
+        "LLM4SE",
+        "Code Generation"
+      ],
+      "selected": true
+    },
     {
       "title": "Hallucination to Consensus: Multi-Agent LLMs for End-to-End Test Generation with Accurate Oracles",
       "authors": [
@@ -176,48 +218,6 @@
         "Benchmarking"
       ],
       "selected": true
-    },
-    {
-      "id": "journals/corr/abs-2607-02949",
-      "title": "BeSpec: Behavior-Level Specification Alignment for Code Generation",
-      "authors": [
-        {
-          "name": "Qinghua Xu",
-          "is_me": false,
-          "equal": false
-        },
-        {
-          "name": "Guancheng Wang",
-          "is_me": true,
-          "equal": false
-        },
-        {
-          "name": "Boxi Yu",
-          "is_me": false,
-          "equal": false
-        },
-        {
-          "name": "Lionel C. Briand",
-          "is_me": false,
-          "equal": false
-        }
-      ],
-      "year": 2026,
-      "type": "preprint",
-      "venue": "arXiv preprint",
-      "venue_short": "arXiv",
-      "volume": null,
-      "number": null,
-      "pages": null,
-      "doi": null,
-      "arxiv": "2607.02949",
-      "url": "https://doi.org/10.48550/arXiv.2607.02949",
-      "source": "dblp",
-      "topics": [
-        "LLM4SE",
-        "Code Generation"
-      ],
-      "selected": false
     },
     {
       "id": "journals/corr/abs-2604-22046",

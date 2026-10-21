@@ -22,6 +22,10 @@ items:
   # These three predate the automation. Everything from here on is written for
   # you when DBLP picks the paper up — you should not need to add paper news
   # by hand again.
+  - date: 2026-10
+    text: "*BeSpec*, on behavior-level specification alignment for code
+           generation, is accepted at **ICSE 2027**."
+
   - date: 2026-07
     text: "*SWE-ABS*, on how adversarial benchmark strengthening exposes inflated
            success rates on test-based benchmarks, is accepted at **ICML 2026**."
@@ -42,4 +46,5 @@ items:
 
 # Auto-generated items you would rather not show. Match on any distinctive
 # substring of the item text — usually part of the paper title is enough.
-hide: []
+hide:
+  - "BeSpec: Behavior-Level"

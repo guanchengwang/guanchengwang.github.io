@@ -35,6 +35,7 @@ author:
 # peer-reviewed papers.
 # ---------------------------------------------------------------------------
 selected:
+  - "BeSpec: Behavior-Level"
   - "SWE-ABS: Adversarial"
   - "Mutation-Guided Unit"
   - "Hallucination to"
@@ -107,6 +108,11 @@ patch:
     topics: ["LLM4SE", "Test Generation"]
 
   - match: "BeSpec: Behavior-Level Specification Alignment for Code Generation"
+    # Accepted at ICSE 2027 (October 2026); DBLP still only has the arXiv preprint.
+    type: conference
+    venue: "49th IEEE/ACM International Conference on Software Engineering"
+    venue_short: "ICSE"
+    year: 2027
     topics: ["LLM4SE", "Code Generation"]
 
   - match: "TATG: Tracking-Aware Testing Objective for LLM-based Test Generation"
